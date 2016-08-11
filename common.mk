@@ -102,8 +102,7 @@ PRODUCT_PACKAGES += \
 	refnotify.rc \
 	set_mac.rc \
 	smd_symlink.rc \
-	swap.rc \
-	wpa_supplicant.rc \
+	swap.rc
 
 # Rootdir files
 PRODUCT_PACKAGES += \
