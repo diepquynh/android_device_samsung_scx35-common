@@ -113,6 +113,9 @@ LOCAL_JACK_ENABLED := disabled
 MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
 
+# System properties
+TARGET_SYSTEM_PROP += device/samsung/scx30g_v2-common/system.prop
+
 # Bionic
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
