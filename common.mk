@@ -17,6 +17,9 @@ LOCAL_PATH := device/samsung/scx30g_v2-common
 # Inherit from AOSP product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Inherit common vendor tree
+$(call inherit-product-if-exists, vendor/samsung/scx30g_v2-common/scx30g_v2-common-vendor.mk)
+
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
