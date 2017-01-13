@@ -51,6 +51,7 @@ ro.telephony.ril_class=SC7730SERIL
 ro.ril.telephony.mqanelements=6
 persist.sys.sprd.modemreset=1
 persist.sys.sprd.wcnreset=1
+ro.telephony.ril.config=simactivation,sim2gsmonly
 
 # Multitasking
 ro.config.zram.swappiness=130
