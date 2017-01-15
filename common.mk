@@ -97,6 +97,10 @@ PRODUCT_PACKAGES += \
 	libril_shim \
 	libgps_shim
 
+# FM radio
+PRODUCT_PACKAGES += \
+	fm.sc8830
+
 # GPS
 GPS_CONFIGS := \
 	$(LOCAL_PATH)/configs/gps/gps.xml \
