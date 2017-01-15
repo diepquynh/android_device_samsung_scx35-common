@@ -50,6 +50,9 @@ USE_BLUETOOTH_BCM4343 := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/scx30g_v2-common/bluetooth
 BOARD_CUSTOM_BT_CONFIG := device/samsung/scx30g_v2-common/bluetooth/libbt_vndcfg.txt
 
+# FM radio
+BOARD_HAVE_FM_BCM := true
+
 # Wifi
 BOARD_WLAN_DEVICE := bcmdhd
 BOARD_WLAN_DEVICE_REV := bcm4343
