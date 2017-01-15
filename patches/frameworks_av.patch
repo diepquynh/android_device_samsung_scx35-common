@@ -1,0 +1,76 @@
+From a25555d3fcb7cd73abe4b9d0cdf0d14f891fa6f6 Mon Sep 17 00:00:00 2001
+From: Remilia Scarlet <remilia.1505@gmail.com>
+Date: Sat, 14 Jan 2017 05:22:45 -0500
+Subject: [PATCH] av: Fixes out-of-memory error on Spreadtrum platform
+
+Based on @ngoquang2708's patch, this have modified Android.mk to make
+sure it uses SPRD defs from hardware source, not from system/core
+
+Change-Id: I5edd81614c6419086ad5499dd61a2594367aae27
+
+Signed-off-by: Remilia Scarlet <remilia.1505@gmail.com>
+---
+ media/libstagefright/ACodec.cpp       | 8 ++++++++
+ media/libstagefright/Android.mk       | 5 +++++
+ media/libstagefright/CameraSource.cpp | 2 +-
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
+index 15433d9..1c4f186 100644
+--- a/media/libstagefright/ACodec.cpp
++++ b/media/libstagefright/ACodec.cpp
+@@ -54,7 +54,11 @@
+ #include <OMX_AsString.h>
+ 
+ #ifdef USE_SAMSUNG_COLORFORMAT
++#ifndef SPRD_HARDWARE
+ #include <sec_format.h>
++#else
++#include <gralloc_priv.h>
++#endif
+ #endif
+ 
+ #include "include/avc_utils.h"
+@@ -1397,6 +1401,10 @@ void ACodec::setNativeWindowColorFormat(OMX_COLOR_FORMATTYPE &eNativeColorFormat
+     if (!strcasecmp(mComponentName.c_str(), "OMX.SEC.AVC.Decoder")
+         || !strcasecmp(mComponentName.c_str(), "OMX.SEC.FP.AVC.Decoder")
+         || !strcasecmp(mComponentName.c_str(), "OMX.SEC.MPEG4.Decoder")
++        || !strcasecmp(mComponentName.c_str(), "OMX.sprd.mpeg4.decoder")
++        || !strcasecmp(mComponentName.c_str(), "OMX.sprd.h263.decoder")
++        || !strcasecmp(mComponentName.c_str(), "OMX.sprd.h264.decoder")
++        || !strcasecmp(mComponentName.c_str(), "OMX.sprd.vpx.decoder")
+         || !strcasecmp(mComponentName.c_str(), "OMX.Exynos.AVC.Decoder")) {
+         switch (eNativeColorFormat) {
+             case OMX_COLOR_FormatYUV420SemiPlanar:
+diff --git a/media/libstagefright/Android.mk b/media/libstagefright/Android.mk
+index de0633a..a053bc4 100644
+--- a/media/libstagefright/Android.mk
++++ b/media/libstagefright/Android.mk
+@@ -79,6 +79,11 @@ LOCAL_C_INCLUDES:= \
+         $(TOP)/system/netd/include \
+         $(call include-path-for, audio-utils)
+ 
++ifeq ($(SOC_SCX30G_V2),true)
++LOCAL_C_INCLUDES += \
++	$(TOP)/hardware/sprd/gralloc/sc8830 \
++endif
++
+ LOCAL_SHARED_LIBRARIES := \
+         libaudioutils \
+         libbinder \
+diff --git a/media/libstagefright/CameraSource.cpp b/media/libstagefright/CameraSource.cpp
+index fc45e38..c44b96a 100644
+--- a/media/libstagefright/CameraSource.cpp
++++ b/media/libstagefright/CameraSource.cpp
+@@ -127,7 +127,7 @@ static int32_t getColorFormat(const char* colorFormat) {
+     }
+ 
+     if (!strcmp(colorFormat, CameraParameters::PIXEL_FORMAT_YUV420SP)) {
+-#ifdef USE_SAMSUNG_COLORFORMAT
++#if defined(USE_SAMSUNG_COLORFORMAT) && !defined(SPRD_HARDWARE)
+         static const int OMX_SEC_COLOR_FormatNV12LPhysicalAddress = 0x7F000002;
+         return OMX_SEC_COLOR_FormatNV12LPhysicalAddress;
+ #else
+-- 
+2.7.4
+
