@@ -54,7 +54,7 @@ PRODUCT_PACKAGES += \
 	gralloc.sc8830 \
 	hwcomposer.sc8830 \
 	sprd_gsp.sc8830 \
-	libmemoryheapion_sprd \
+	libmemoryheapion \
 	libion_sprd
 
 # Codecs
