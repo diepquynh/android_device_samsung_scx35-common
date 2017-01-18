@@ -68,3 +68,6 @@ media.stagefright.less-secure=true
 
 # EGL blobs crash on screen off
 ro.egl.destroy_after_detach=true
+
+# sdcardfs
+ro.sys.sdcardfs=true
