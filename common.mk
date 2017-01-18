@@ -64,7 +64,8 @@ PRODUCT_PACKAGES += \
 	libstagefright_sprd_mpeg4enc \
 	libstagefright_sprd_h264dec \
 	libstagefright_sprd_h264enc \
-	libstagefright_sprd_vpxdec
+	libstagefright_sprd_vpxdec \
+	libstagefright_sprd_mp3dec
 
 # Lights
 PRODUCT_PACKAGES += \
