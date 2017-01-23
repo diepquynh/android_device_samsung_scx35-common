@@ -192,6 +192,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.sys.fw.dex2oat_thread_count=4 \
 	dalvik.vm.dex2oat-flags=--no-watch-dog
 
+# Camera config
+PRODUCT_PROPERTY_OVERRIDES += \
+	camera.disable_zsl_mode=1
+
 # Languages
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.product.locale.language=en \
