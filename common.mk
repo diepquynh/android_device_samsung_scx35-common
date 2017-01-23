@@ -35,7 +35,7 @@ BLUETOOTH_CONFIGS := \
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(BLUETOOTH_CONFIGS),$(f):system/etc/bluetooth/$(notdir $(f)))
 
-# Bluetooth config
+# Keylayouts
 KEYLAYOUTS := \
 	$(LOCAL_PATH)/keylayout/sec_touchscreen.kl
 
