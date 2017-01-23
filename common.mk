@@ -35,6 +35,13 @@ BLUETOOTH_CONFIGS := \
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(BLUETOOTH_CONFIGS),$(f):system/etc/bluetooth/$(notdir $(f)))
 
+# Bluetooth config
+KEYLAYOUTS := \
+	$(LOCAL_PATH)/keylayout/sec_touchscreen.kl
+
+PRODUCT_COPY_FILES += \
+	$(foreach f,$(KEYLAYOUTS),$(f):system/usr/keylayout/$(notdir $(f)))
+
 # Media config
 MEDIA_CONFIGS := \
 	$(LOCAL_PATH)/configs/media_codecs.xml \
