@@ -68,6 +68,7 @@ PRODUCT_PACKAGES += \
 
 # Codecs
 PRODUCT_PACKAGES += \
+	libcolorformat_switcher \
 	libstagefrighthw \
 	libstagefright_sprd_mpeg4dec \
 	libstagefright_sprd_mpeg4enc \
