@@ -76,10 +76,14 @@ Only the three quirks included above are recognized at this point:
 -->
 
 <MediaCodecs>
-    <Decoders>
+    <Settings>
+       <Setting name="max-video-encoder-input-buffers" value="5" />
+    </Settings>
+    <Decoders>       
         <MediaCodec name="OMX.sprd.mpeg4.decoder" type="video/mp4v-es">
             <Quirk name="requires-allocate-on-output-ports" />
-            <Quirk name="needs-flush-before-disable" />
+            <Quirk name="needs-flush-before-disable"/>
+            <Quirk name="video-controller-check-enable" />
             <!-- profiles and levels: Advance Simple Profile : Level5 -->
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
@@ -90,7 +94,8 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
         <MediaCodec name="OMX.sprd.h263.decoder" type="video/3gpp">
             <Quirk name="requires-allocate-on-output-ports" />
-            <Quirk name="needs-flush-before-disable" />
+            <Quirk name="needs-flush-before-disable"/>
+            <Quirk name="video-controller-check-enable" />
             <!-- profiles and levels: ProfileBaseline : Level70 -->
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
@@ -101,18 +106,20 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
         <MediaCodec name="OMX.sprd.h264.decoder" type="video/avc">
             <Quirk name="requires-allocate-on-output-ports" />
-            <Quirk name="needs-flush-before-disable" />
+            <Quirk name="needs-flush-before-disable"/>
+            <Quirk name="video-controller-check-enable" />
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
             <Limit name="blocks-per-second" range="1-245760" />
             <Limit name="bitrate" range="1-50000000" />
+	    <Limit name="concurrent-instances" max="16" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
-
         <MediaCodec name="OMX.sprd.vpx.decoder" type="video/x-vnd.on2.vp8">
             <Quirk name="requires-allocate-on-output-ports" />
-            <Quirk name="needs-flush-before-disable" />
+            <Quirk name="needs-flush-before-disable"/>
+            <Quirk name="video-controller-check-enable" />
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
@@ -122,19 +129,9 @@ Only the three quirks included above are recognized at this point:
         </MediaCodec>
     </Decoders>
 
-        <!-- C&M Supported decoder BEGIN-->
-        <MediaCodec name="OMX.vpu.video_decoder.avc" type="video/avc">
-            <Quirk name="requires-allocate-on-output-ports" />
-            <Limit name="size" min="64x64" max="1920x1088" />
-            <Limit name="alignment" value="2x2" />
-            <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
-            <Limit name="bitrate" range="1-50000000" />
-            <Feature name="adaptive-playback" />
-        </MediaCodec>
-
     <Encoders>
         <MediaCodec name="OMX.sprd.mpeg4.encoder" type="video/mp4v-es">
+            <Quirk name="video-controller-check-enable" />
             <!-- profiles and levels:  Simple Profile : Level5 -->
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
@@ -143,6 +140,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
         <MediaCodec name="OMX.sprd.h263.encoder" type="video/3gpp">
+            <Quirk name="video-controller-check-enable" />
             <!-- profiles and levels:  ProfileBaseline : Level70 -->
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
@@ -150,7 +148,8 @@ Only the three quirks included above are recognized at this point:
             <Limit name="blocks-per-second" range="12-245760" />
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
-        <MediaCodec name="OMX.sprd.h264.encoder" type="video/avc">
+        <MediaCodec name="OMX.sprd.h264.encoder" type="video/avc">         
+            <Quirk name="video-controller-check-enable" />
             <!-- profiles and levels:  ProfileBaseline : Level2 -->
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
@@ -159,9 +158,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
     </Encoders>
-    <Include href="media_codecs_google_audio.xml" />
     <Include href="media_codecs_google_video.xml" />
+    <Include href="media_codecs_google_audio.xml" />
     <Include href="media_codecs_google_telephony.xml" />
-    <Include href="media_codecs_ffmpeg.xml" />
-
 </MediaCodecs>
