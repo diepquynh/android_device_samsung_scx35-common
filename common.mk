@@ -171,6 +171,7 @@ SYSTEM_INIT_RC_FILES := \
 	device/samsung/scx30g_v2-common/system/etc/init/rild.rc \
 	device/samsung/scx30g_v2-common/system/etc/init/set_mac.rc \
 	device/samsung/scx30g_v2-common/system/etc/init/smd_symlink.rc \
+	device/samsung/scx30g_v2-common/system/etc/init/swap.rc \
 	device/samsung/scx30g_v2-common/system/etc/init/wpa_supplicant.rc \
 
 PRODUCT_COPY_FILES += \
