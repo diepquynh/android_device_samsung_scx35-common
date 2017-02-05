@@ -104,12 +104,6 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
 TARGET_RECOVERY_FSTAB := device/samsung/scx30g_v2-common/rootdir/fstab.sc8830
 
-# Build system
-USE_NINJA := false
-
-# Disable crappy JACK
-LOCAL_JACK_ENABLED := disabled
-
 # Use dmalloc() for such low memory devices like us
 MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
