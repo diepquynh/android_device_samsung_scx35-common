@@ -60,7 +60,6 @@ PRODUCT_PACKAGES += \
 
 # HWC
 PRODUCT_PACKAGES += \
-	libHWCUtils \
 	gralloc.sc8830 \
 	hwcomposer.sc8830 \
 	sprd_gsp.sc8830 \
@@ -88,8 +87,7 @@ PRODUCT_PACKAGES += \
 # Audio
 PRODUCT_PACKAGES += \
 	audio.primary.sc8830 \
-	libaudio-resampler \
-	libatchannel_wrapper
+	libaudio-resampler
 
 AUDIO_CONFIGS := \
 	$(LOCAL_PATH)/configs/audio/audio_hw.xml \
@@ -104,7 +102,6 @@ PRODUCT_COPY_FILES += \
 # Common libs
 PRODUCT_PACKAGES += \
 	libstlport \
-	librilutils \
 	libril_shim \
 	libgps_shim
 
@@ -144,38 +141,12 @@ PRODUCT_COPY_FILES += \
 ROOTDIR_FILES := \
 	$(LOCAL_PATH)/rootdir/init.board.rc \
 	$(LOCAL_PATH)/rootdir/init.wifi.rc \
+	$(LOCAL_PATH)/rootdir/init.sc8830.usb.rc \
+	$(LOCAL_PATH)/rootdir/ueventd.sc8830.rc \
 	$(LOCAL_PATH)/rootdir/fstab.sc8830
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(ROOTDIR_FILES),$(f):root/$(notdir $(f)))
-
-# System init .rc files
-SYSTEM_INIT_RC_FILES := \
-	device/samsung/scx30g_v2-common/system/etc/init/at_distributor.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/chown_service.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/data.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/dns.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/engpc.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/gpsd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/hostapd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/kill_phone.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/macloader.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/mediacodec.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/mediaserver.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/modem_control.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/modemd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/nvitemd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/p2p_supplicant.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/phoneserver.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/refnotify.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/rild.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/set_mac.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/smd_symlink.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/swap.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/wpa_supplicant.rc \
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(SYSTEM_INIT_RC_FILES),$(f):system/etc/init/$(notdir $(f)))
 
 # Permissions
 PERMISSIONS_XML_FILES := \
