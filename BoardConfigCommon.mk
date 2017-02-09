@@ -15,6 +15,9 @@
 # Inherit from SPRD common configs
 -include device/samsung/sprd-common/BoardConfigCommon.mk
 
+# Inherit from the proprietary version
+-include vendor/samsung/scx30g_v2-common/BoardConfigVendor.mk
+
 # Platform
 TARGET_ARCH := arm
 TARGET_BOARD_PLATFORM := sc8830
@@ -25,7 +28,10 @@ TARGET_CPU_VARIANT := cortex-a7
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_BOOTLOADER_BOARD_NAME := SC7730SE
+TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
 BOARD_VENDOR := samsung
+TARGET_UNIFIED_DEVICE := true
 
 # Config u-boot
 TARGET_NO_BOOTLOADER := true
@@ -35,22 +41,22 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1572864000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 5872025600
 BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
 BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_PLATFORM_DEVICE_BASE := /devices/sdio_emmc/
 
 # RIL
 BOARD_RIL_CLASS += ../../../device/samsung/scx30g_v2-common/ril
-BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
-
-# Bluetooth
-USE_BLUETOOTH_BCM4343 := true
-BOARD_CUSTOM_BT_CONFIG := device/samsung/scx30g_v2-common/bluetooth/libbt_vndcfg.txt
+COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # FM radio
 BOARD_HAVE_FM_BCM := true
+BOARD_HAVE_FMRADIO_BCM := true
+
+# Bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/scx30g_v2-common/bluetooth
+BOARD_BLUEDROID_VENDOR_CONF := device/samsung/scx30g_v2-common/bluetooth/libbt_vndcfg.txt
 
 # Wifi
 BOARD_WLAN_DEVICE := bcmdhd
@@ -71,12 +77,15 @@ BOARD_HAVE_SAMSUNG_WIFI := true
 # Graphics
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_EGL_NEEDS_HANDLE_VALUE := true
+HWUI_COMPILE_FOR_PERF := true
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
-TARGET_FORCE_SCREENSHOT_CPU_PATH := true
+COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 # HWComposer
 USE_SPRD_HWCOMPOSER := true
+USE_SPRD_DITHER := true
+USE_OVERLAY_COMPOSER_GPU := true
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 
 # Enable WEBGL in WebKit
@@ -89,11 +98,8 @@ EXTENDED_FONT_FOOTPRINT := true
 TARGET_HAS_BACKLIT_KEYS := false
 
 # Codecs
-BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
+COMMON_GLOBAL_CFLAGS += -DBOARD_CANT_REALLOCATE_OMX_BUFFERS
 SOC_SCX30G_V2 := true
-
-# Board specific features
-TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 # healthd
 BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
@@ -104,23 +110,20 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
 TARGET_RECOVERY_FSTAB := device/samsung/scx30g_v2-common/rootdir/fstab.sc8830
 
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_sec
+
 # Use dmalloc() for such low memory devices like us
-MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
 
 # System properties
 TARGET_SYSTEM_PROP += device/samsung/scx30g_v2-common/system.prop
 
-# Bionic
-TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
-
-# SELinux
-BOARD_SEPOLICY_DIRS += device/samsung/scx30g_v2-common/sepolicy
-
 # Enable dex-preoptimization to speed up the first boot sequence
-#WITH_DEXPREOPT := true
-#WITH_DEXPREOPT_PIC := true
-#WITH_DEXPREOPT_COMP := false
+WITH_DEXPREOPT := true
+WITH_DEXPREOPT_BOOT_IMG_ONLY := true
+WITH_DEXPREOPT_PIC := true
+WITH_DEXPREOPT_COMP := false
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
@@ -129,5 +132,3 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 CHARGING_ENABLED_PATH := /sys/class/power_supply/battery/batt_lp_charging
 BACKLIGHT_PATH := /sys/class/backlight/panel/brightness
 
-# Build system
-WITHOUT_CHECK_API := true
