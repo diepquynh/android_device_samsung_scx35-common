@@ -15,7 +15,7 @@
         android:targetSdkVersion="21"/>
 
     <application
-        android:label="@string/device_settings_app_name"
+        android:label="SamsungDoze"
         android:persistent="true">
 
         <receiver android:name="com.cyanogenmod.settings.device.BootCompletedReceiver">
@@ -30,19 +30,18 @@
         </service>
 
         <activity
-            android:name=".SamsungDozeActivity"
-            android:label="@string/ambient_display_title"
-            android:theme="@style/SamsungDozeSettings">
+            android:name=".TouchscreenGestureSettings"
+            android:label="@string/screen_gestures_panel_title"
+            android:theme="@android:style/Theme.Material.Settings">
             <intent-filter>
-                <action android:name="org.cyanogenmod.settings.device.DOZE_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
             </intent-filter>
             <meta-data
-                android:name="org.cyanogenmod.settings.summary.receiver"
-                android:value="com.cyanogenmod.settings.doze.DozeReceiver" />
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.device" />
             <meta-data
-                android:name="org.cyanogenmod.settings.summary.key"
-                android:value="doze_device_settings" />
+                android:name="com.android.settings.icon"
+                android:resource="@drawable/ic_settings_gestures" />
         </activity>
 
     </application>
