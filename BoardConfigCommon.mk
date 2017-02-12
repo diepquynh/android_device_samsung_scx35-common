@@ -114,6 +114,9 @@ TARGET_SYSTEM_PROP += device/samsung/scx30g_v2-common/system.prop
 # Bionic
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
+# PowerHAL
+TARGET_POWERHAL_VARIANT := scx30g_v2
+
 # SELinux
 BOARD_SEPOLICY_DIRS += device/samsung/scx30g_v2-common/sepolicy
 
