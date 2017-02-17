@@ -8,8 +8,6 @@ debug.hwui.render_dirty_regions=false
 
 persist.sys.engpc.disable=0
 
-ro.config.ksm.support=true
-
 # System property for storage_preload
 persist.sys.storage_preload=1
 
