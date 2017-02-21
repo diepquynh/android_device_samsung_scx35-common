@@ -129,7 +129,8 @@ PRODUCT_PACKAGES += \
 
 # SamsungDoze
 PRODUCT_PACKAGES += \
-	SamsungDoze
+	SamsungDoze \
+	Gello
 
 WIFI_CONFIGS := \
 	$(LOCAL_PATH)/configs/wifi/wpa_supplicant.conf \
