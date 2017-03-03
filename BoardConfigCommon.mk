@@ -120,6 +120,9 @@ TARGET_POWERHAL_VARIANT := scx30g_v2
 # SELinux
 BOARD_SEPOLICY_DIRS += device/samsung/scx30g_v2-common/sepolicy
 
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_sec
+
 # Enable dex-preoptimization to speed up the first boot sequence
 #WITH_DEXPREOPT := true
 #WITH_DEXPREOPT_PIC := true
