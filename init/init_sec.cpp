@@ -37,7 +37,15 @@ void vendor_load_properties()
 {
     std::string bootloader = property_get("ro.bootloader");
 
-    if (bootloader.find("G361H") != std::string::npos) {
+    if (bootloader.find("G360H") != std::string::npos) {
+        /* core33gdd */
+        property_set("ro.product.model", "SM-G360H");
+        property_set("ro.product.device", "core33g");
+    } else if (bootloader.find("G360HU") != std::string::npos) {
+        /* core33gdc */
+        property_set("ro.product.model", "SM-G360HU");
+        property_set("ro.product.device", "core33g");
+    } else if (bootloader.find("G361H") != std::string::npos) {
         /* coreprimeve3gxx */
         property_set("ro.product.model", "SM-G361H");
         property_set("ro.product.device", "coreprimeve3g");

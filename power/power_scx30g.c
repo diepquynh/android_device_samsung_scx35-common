@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
  * Copyright (C) 2014 The CyanogenMod Project
+ * Copyright (C) 2017 The Lineage Project
  * Copyright (C) 2014-2015 Andreas Schneider <asn@cryptomilk.org>
  * Copyright (C) 2014-2015 Christopher N. Hesse <raymanfx@gmail.com>
  *
@@ -29,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define LOG_TAG "SCX30G2PowerHAL"
+#define LOG_TAG "SCX30GPowerHAL"
 /* #define LOG_NDEBUG 0 */
 #include <utils/Log.h>
 

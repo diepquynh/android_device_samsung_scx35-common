@@ -14,14 +14,14 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_POWERHAL_VARIANT),scx30g_v2)
+ifeq ($(TARGET_POWERHAL_VARIANT),scx30g)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := power.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_SHARED_LIBRARIES := liblog libcutils
-LOCAL_SRC_FILES := power_scx30g_v2.c
+LOCAL_SRC_FILES := power_scx30g.c
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)

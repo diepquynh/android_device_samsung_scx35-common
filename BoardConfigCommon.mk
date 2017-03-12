@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ifeq ($(TARGET_DEVICE),core33g)
+TARGET_SOC := scx30g
+else
+TARGET_SOC := scx30g_v2
+endif
+
 # Inherit from SPRD common configs
 -include device/samsung/sprd-common/BoardConfigCommon.mk
 
@@ -24,30 +30,16 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := cortex-a7
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_BOOTLOADER_BOARD_NAME := SC7730SE
+TARGET_NO_BOOTLOADER := true
 BOARD_VENDOR := samsung
 
-# Config u-boot
-TARGET_NO_BOOTLOADER := true
-
-BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1572864000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 5872025600
-BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_FLASH_BLOCK_SIZE := 131072
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
-BOARD_HAS_LARGE_FILESYSTEM := true
-
 # RIL
-BOARD_RIL_CLASS += ../../../device/samsung/scx30g_v2-common/ril
+BOARD_RIL_CLASS += ../../../device/samsung/scx30g-common/ril
 BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # Bluetooth
 USE_BLUETOOTH_BCM4343 := true
-BOARD_CUSTOM_BT_CONFIG := device/samsung/scx30g_v2-common/bluetooth/libbt_vndcfg.txt
+BOARD_CUSTOM_BT_CONFIG := device/samsung/scx30g-common/bluetooth/libbt_vndcfg.txt
 
 # FM radio
 BOARD_HAVE_FM_BCM := true
@@ -90,7 +82,6 @@ TARGET_HAS_BACKLIT_KEYS := false
 
 # Codecs
 BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
-SOC_SCX30G_V2 := true
 
 # Board specific features
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
@@ -102,23 +93,23 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
 BOARD_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
-TARGET_RECOVERY_FSTAB := device/samsung/scx30g_v2-common/rootdir/fstab.sc8830
+TARGET_RECOVERY_FSTAB := device/samsung/scx30g-common/rootdir/fstab.sc8830
 
 # Use dmalloc() for such low memory devices like us
 MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
 
 # System properties
-TARGET_SYSTEM_PROP += device/samsung/scx30g_v2-common/system.prop
+TARGET_SYSTEM_PROP += device/samsung/scx30g-common/system.$(TARGET_SOC).prop
 
 # Bionic
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
 # PowerHAL
-TARGET_POWERHAL_VARIANT := scx30g_v2
+TARGET_POWERHAL_VARIANT := scx30g
 
 # SELinux
-BOARD_SEPOLICY_DIRS += device/samsung/scx30g_v2-common/sepolicy
+BOARD_SEPOLICY_DIRS += device/samsung/scx30g-common/sepolicy
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec

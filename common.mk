@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := device/samsung/scx30g_v2-common
+ifeq ($(TARGET_DEVICE),core33g)
+SOC := scx30g
+else
+SOC := scx30g_v2
+endif
+
+LOCAL_PATH := device/samsung/scx30g-common
 
 # Inherit from AOSP product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Inherit common vendor tree
-$(call inherit-product-if-exists, vendor/samsung/scx30g_v2-common/scx30g_v2-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/$(SOC)-common/$(SOC)-common-vendor.mk)
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
@@ -30,7 +36,7 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Bluetooth config
 BLUETOOTH_CONFIGS := \
-	$(LOCAL_PATH)/configs/bluetooth/bt_vendor.conf
+	$(LOCAL_PATH)/configs/bluetooth/$(SOC)/bt_vendor.conf
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(BLUETOOTH_CONFIGS),$(f):system/etc/bluetooth/$(notdir $(f)))
@@ -92,11 +98,11 @@ PRODUCT_PACKAGES += \
 	libatchannel_wrapper
 
 AUDIO_CONFIGS := \
-	$(LOCAL_PATH)/configs/audio/audio_hw.xml \
-	$(LOCAL_PATH)/configs/audio/audio_para \
-	$(LOCAL_PATH)/configs/audio/audio_policy.conf \
-	$(LOCAL_PATH)/configs/audio/codec_pga.xml \
-	$(LOCAL_PATH)/configs/audio/tiny_hw.xml
+	$(LOCAL_PATH)/configs/audio/$(SOC)/audio_hw.xml \
+	$(LOCAL_PATH)/configs/audio/$(SOC)/audio_para \
+	$(LOCAL_PATH)/configs/audio/$(SOC)/audio_policy.conf \
+	$(LOCAL_PATH)/configs/audio/$(SOC)/codec_pga.xml \
+	$(LOCAL_PATH)/configs/audio/$(SOC)/tiny_hw.xml
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f))) \
@@ -114,7 +120,7 @@ PRODUCT_PACKAGES += \
 
 # GPS
 GPS_CONFIGS := \
-	$(LOCAL_PATH)/configs/gps/gps.xml \
+	$(LOCAL_PATH)/configs/gps/$(SOC)/gps.xml \
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(GPS_CONFIGS),$(f):system/etc/$(notdir $(f)))
@@ -133,17 +139,18 @@ PRODUCT_PACKAGES += \
 	Gello
 
 WIFI_CONFIGS := \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant.conf \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/nvram_net.txt
+	$(LOCAL_PATH)/configs/wifi/$(SOC)/wpa_supplicant.conf \
+	$(LOCAL_PATH)/configs/wifi/$(SOC)/wpa_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/$(SOC)/p2p_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/$(SOC)/nvram_net.txt \
+	$(LOCAL_PATH)/configs/wifi/$(SOC)/nvram_mfg.txt
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(WIFI_CONFIGS),$(f):system/etc/wifi/$(notdir $(f)))
 
 # Rootdir files
 ROOTDIR_FILES := \
-	$(LOCAL_PATH)/rootdir/init.board.rc \
+	$(LOCAL_PATH)/rootdir/$(SOC)/init.board.rc \
 	$(LOCAL_PATH)/rootdir/init.wifi.rc \
 	$(LOCAL_PATH)/rootdir/fstab.sc8830
 
@@ -152,28 +159,28 @@ PRODUCT_COPY_FILES += \
 
 # System init .rc files
 SYSTEM_INIT_RC_FILES := \
-	device/samsung/scx30g_v2-common/system/etc/init/at_distributor.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/chown_service.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/data.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/dns.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/engpc.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/gpsd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/hostapd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/kill_phone.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/macloader.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/mediacodec.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/mediaserver.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/modem_control.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/modemd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/nvitemd.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/p2p_supplicant.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/phoneserver.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/refnotify.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/rild.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/set_mac.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/smd_symlink.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/swap.rc \
-	device/samsung/scx30g_v2-common/system/etc/init/wpa_supplicant.rc \
+	device/samsung/scx30g-common/system/etc/init/at_distributor.rc \
+	device/samsung/scx30g-common/system/etc/init/chown_service.rc \
+	device/samsung/scx30g-common/system/etc/init/data.rc \
+	device/samsung/scx30g-common/system/etc/init/dns.rc \
+	device/samsung/scx30g-common/system/etc/init/engpc.rc \
+	device/samsung/scx30g-common/system/etc/init/gpsd.rc \
+	device/samsung/scx30g-common/system/etc/init/hostapd.rc \
+	device/samsung/scx30g-common/system/etc/init/kill_phone.rc \
+	device/samsung/scx30g-common/system/etc/init/macloader.rc \
+	device/samsung/scx30g-common/system/etc/init/mediacodec.rc \
+	device/samsung/scx30g-common/system/etc/init/mediaserver.rc \
+	device/samsung/scx30g-common/system/etc/init/modem_control.rc \
+	device/samsung/scx30g-common/system/etc/init/modemd.rc \
+	device/samsung/scx30g-common/system/etc/init/nvitemd.rc \
+	device/samsung/scx30g-common/system/etc/init/p2p_supplicant.rc \
+	device/samsung/scx30g-common/system/etc/init/phoneserver.rc \
+	device/samsung/scx30g-common/system/etc/init/refnotify.rc \
+	device/samsung/scx30g-common/system/etc/init/rild.rc \
+	device/samsung/scx30g-common/system/etc/init/set_mac.rc \
+	device/samsung/scx30g-common/system/etc/init/smd_symlink.rc \
+	device/samsung/scx30g-common/system/etc/init/swap.rc \
+	device/samsung/scx30g-common/system/etc/init/wpa_supplicant.rc \
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(SYSTEM_INIT_RC_FILES),$(f):system/etc/init/$(notdir $(f)))
