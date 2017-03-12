@@ -102,7 +102,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	init.board.rc \
 	init.wifi.rc \
-	fstab.sc8830 \
 
 # Permissions
 PERMISSIONS_XML_FILES := \
