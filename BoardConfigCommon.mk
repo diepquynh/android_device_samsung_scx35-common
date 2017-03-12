@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,12 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-ifeq ($(TARGET_DEVICE),core33g)
-TARGET_SOC := scx30g
-else
-TARGET_SOC := scx30g_v2
-endif
 
 # Inherit from SPRD common configs
 -include device/samsung/sprd-common/BoardConfigCommon.mk
@@ -34,12 +28,11 @@ TARGET_NO_BOOTLOADER := true
 BOARD_VENDOR := samsung
 
 # RIL
-BOARD_RIL_CLASS += ../../../device/samsung/scx30g-common/ril
 BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # Bluetooth
 USE_BLUETOOTH_BCM4343 := true
-BOARD_CUSTOM_BT_CONFIG := device/samsung/scx30g-common/bluetooth/libbt_vndcfg.txt
+BOARD_CUSTOM_BT_CONFIG := device/samsung/scx35-common/bluetooth/libbt_vndcfg.txt
 
 # FM radio
 BOARD_HAVE_FM_BCM := true
@@ -93,23 +86,20 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
 BOARD_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
-TARGET_RECOVERY_FSTAB := device/samsung/scx30g-common/rootdir/fstab.sc8830
+TARGET_RECOVERY_FSTAB := device/samsung/scx35-common/rootdir/fstab.sc8830
 
 # Use dmalloc() for such low memory devices like us
 MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
 
-# System properties
-TARGET_SYSTEM_PROP += device/samsung/scx30g-common/system.$(TARGET_SOC).prop
-
 # Bionic
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
 # PowerHAL
-TARGET_POWERHAL_VARIANT := scx30g
+TARGET_POWERHAL_VARIANT := scx35
 
 # SELinux
-BOARD_SEPOLICY_DIRS += device/samsung/scx30g-common/sepolicy
+BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec

@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define LOG_TAG "SCX30GPowerHAL"
+#define LOG_TAG "SCX35PowerHAL"
 /* #define LOG_NDEBUG 0 */
 #include <utils/Log.h>
 

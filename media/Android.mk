@@ -1,4 +1,5 @@
-# Copyright (C) 2012 The Android Open Source Project
+#
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +12,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-LOCAL_PATH := $(call my-dir)
-
-ifeq ($(TARGET_POWERHAL_VARIANT),scx35)
+LOCAL_PATH := $(my-dir)
 
 include $(CLEAR_VARS)
-
-LOCAL_MODULE := power.$(TARGET_BOARD_PLATFORM)
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_SHARED_LIBRARIES := liblog libcutils
-LOCAL_SRC_FILES := power_scx35.c
+LOCAL_MODULE := media_codecs.xml
 LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
 
-include $(BUILD_SHARED_LIBRARY)
-
-endif
+include $(CLEAR_VARS)
+LOCAL_MODULE := media_codecs_performance.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
