@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
 # Inherit from SPRD common configs
 -include device/samsung/sprd-common/BoardConfigCommon.mk
 
-# Inherit from the proprietary version
--include vendor/samsung/scx30g_v2-common/BoardConfigVendor.mk
-
 # Platform
 TARGET_ARCH := arm
 TARGET_BOARD_PLATFORM := sc8830
@@ -28,26 +25,10 @@ TARGET_CPU_VARIANT := cortex-a7
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_BOOTLOADER_BOARD_NAME := SC7730SE
-TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
-TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
 BOARD_VENDOR := samsung
 TARGET_UNIFIED_DEVICE := true
 
-# Config u-boot
-TARGET_NO_BOOTLOADER := true
-
-BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1572864000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 5872025600
-BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
-BOARD_FLASH_BLOCK_SIZE := 131072
-TARGET_USERIMAGES_USE_EXT4 := true
-BOARD_HAS_LARGE_FILESYSTEM := true
-TARGET_PLATFORM_DEVICE_BASE := /devices/sdio_emmc/
-
 # RIL
-BOARD_RIL_CLASS += ../../../device/samsung/scx30g_v2-common/ril
 COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # FM radio
@@ -55,8 +36,7 @@ BOARD_HAVE_FM_BCM := true
 BOARD_HAVE_FMRADIO_BCM := true
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/scx30g_v2-common/bluetooth
-BOARD_BLUEDROID_VENDOR_CONF := device/samsung/scx30g_v2-common/bluetooth/libbt_vndcfg.txt
+BOARD_BLUEDROID_VENDOR_CONF := device/samsung/scx35-common/bluetooth/libbt_vndcfg.txt
 
 # Wifi
 BOARD_WLAN_DEVICE := bcmdhd
@@ -99,7 +79,6 @@ TARGET_HAS_BACKLIT_KEYS := false
 
 # Codecs
 COMMON_GLOBAL_CFLAGS += -DBOARD_CANT_REALLOCATE_OMX_BUFFERS
-SOC_SCX30G_V2 := true
 
 # healthd
 BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
@@ -108,16 +87,16 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
 BOARD_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
-TARGET_RECOVERY_FSTAB := device/samsung/scx30g_v2-common/rootdir/fstab.sc8830
+TARGET_RECOVERY_FSTAB := device/samsung/scx35-common/rootdir/fstab.sc8830
+
+# PowerHAL
+TARGET_POWERHAL_VARIANT := scx35
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec
 
 # Use dmalloc() for such low memory devices like us
 BOARD_USES_LEGACY_MMAP := true
-
-# System properties
-TARGET_SYSTEM_PROP += device/samsung/scx30g_v2-common/system.prop
 
 # Enable dex-preoptimization to speed up the first boot sequence
 WITH_DEXPREOPT := true

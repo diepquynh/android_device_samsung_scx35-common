@@ -41,7 +41,15 @@ void vendor_load_properties()
 
     property_get("ro.bootloader", bootloader);
 
-    if (strstr(bootloader, "G361H")) {
+    if (strstr(bootloader, "G360H")) {
+        /* core33gdd */
+        property_set("ro.product.model", "SM-G360H");
+        property_set("ro.product.device", "core33g");
+    } else if (strstr(bootloader, "G361H")) {
+        /* core33gdu */
+        property_set("ro.product.model", "SM-G360HU");
+        property_set("ro.product.device", "core33g");
+    } else if (strstr(bootloader, "G361H")) {
         /* coreprimeve3gxx */
         property_set("ro.product.model", "SM-G361H");
         property_set("ro.product.device", "coreprimeve3g");

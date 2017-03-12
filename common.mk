@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := device/samsung/scx30g_v2-common
+LOCAL_PATH := device/samsung/scx35-common
 
 # Inherit from AOSP product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
-# Inherit common vendor tree
-$(call inherit-product-if-exists, vendor/samsung/scx30g_v2-common/scx30g_v2-common-vendor.mk)
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
@@ -28,31 +25,19 @@ $(call inherit-product, device/samsung/sprd-common/common.mk)
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Bluetooth config
-BLUETOOTH_CONFIGS := \
-	$(LOCAL_PATH)/configs/bluetooth/bt_vendor.conf
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(BLUETOOTH_CONFIGS),$(f):system/etc/bluetooth/$(notdir $(f)))
-
-# Keylayouts
-KEYLAYOUTS := \
-	$(LOCAL_PATH)/keylayout/sec_touchscreen.kl
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(KEYLAYOUTS),$(f):system/usr/keylayout/$(notdir $(f)))
-
 # Media config
-MEDIA_CONFIGS := \
-	$(LOCAL_PATH)/configs/media_codecs.xml \
-	$(LOCAL_PATH)/configs/media_codecs_performance.xml \
+MEDIA_XML_CONFIGS := \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml
 
 PRODUCT_COPY_FILES += \
-	$(foreach f,$(MEDIA_CONFIGS),$(f):system/etc/$(notdir $(f)))
+	$(foreach f,$(MEDIA_XML_CONFIGS),$(f):system/etc/$(notdir $(f)))
+
+PRODUCT_PACKAGES += \
+	media_codecs.xml \
+	media_codecs_performance.xml
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -87,17 +72,8 @@ PRODUCT_PACKAGES += \
 # Audio
 PRODUCT_PACKAGES += \
 	audio.primary.sc8830 \
-	libaudio-resampler
-
-AUDIO_CONFIGS := \
-	$(LOCAL_PATH)/configs/audio/audio_hw.xml \
-	$(LOCAL_PATH)/configs/audio/audio_para \
-	$(LOCAL_PATH)/configs/audio/audio_policy.conf \
-	$(LOCAL_PATH)/configs/audio/codec_pga.xml \
-	$(LOCAL_PATH)/configs/audio/tiny_hw.xml
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f))) \
+	libaudio-resampler \
+	libatchannel_wrapper
 
 # Common libs
 PRODUCT_PACKAGES += \
@@ -109,13 +85,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fm.sc8830
 
-# GPS
-GPS_CONFIGS := \
-	$(LOCAL_PATH)/configs/gps/gps.xml \
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(GPS_CONFIGS),$(f):system/etc/$(notdir $(f)))
-
 # Wifi
 PRODUCT_PACKAGES += \
 	macloader
@@ -126,27 +95,14 @@ PRODUCT_PACKAGES += \
 
 # SamsungDoze
 PRODUCT_PACKAGES += \
-	SamsungDoze
-
-WIFI_CONFIGS := \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant.conf \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/nvram_net.txt
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(WIFI_CONFIGS),$(f):system/etc/wifi/$(notdir $(f)))
+	SamsungDoze \
+	Gello
 
 # Rootdir files
-ROOTDIR_FILES := \
-	$(LOCAL_PATH)/rootdir/init.board.rc \
-	$(LOCAL_PATH)/rootdir/init.wifi.rc \
-	$(LOCAL_PATH)/rootdir/init.sc8830.usb.rc \
-	$(LOCAL_PATH)/rootdir/ueventd.sc8830.rc \
-	$(LOCAL_PATH)/rootdir/fstab.sc8830
-
-PRODUCT_COPY_FILES += \
-	$(foreach f,$(ROOTDIR_FILES),$(f):root/$(notdir $(f)))
+PRODUCT_PACKAGES += \
+	init.board.rc \
+	init.wifi.rc \
+	fstab.sc8830 \
 
 # Permissions
 PERMISSIONS_XML_FILES := \
