@@ -86,7 +86,6 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
 BOARD_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_SUPPRESS_EMMC_WIPE := true
-TARGET_RECOVERY_FSTAB := device/samsung/scx35-common/rootdir/fstab.sc8830
 
 # Use dmalloc() for such low memory devices like us
 MALLOC_SVELTE := true

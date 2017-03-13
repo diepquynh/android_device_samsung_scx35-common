@@ -103,8 +103,7 @@ PRODUCT_PACKAGES += \
 # Rootdir files
 PRODUCT_PACKAGES += \
 	init.board.rc \
-	init.wifi.rc \
-	fstab.sc8830 \
+	init.wifi.rc
 
 # System init .rc files
 PRODUCT_PACKAGES += \
