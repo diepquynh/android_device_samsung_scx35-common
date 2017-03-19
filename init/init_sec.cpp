@@ -27,38 +27,78 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
 #include "util.h"
 
+std::string bootloader;
+std::string device;
+
+enum device_variant {
+	G360H,
+	G360HU,
+	G361H,
+	G531BT,
+	G531H,
+};
+
+device_variant match(std::string bl)
+{
+        if (bl.find("G360H") != std::string::npos) {
+                return G360H;
+        } else if (bl.find("G360HU") != std::string::npos) {
+                return G360HU;
+        } else if (bl.find("G361H") != std::string::npos) {
+                return G361H;
+        } else if (bl.find("G531BT") != std::string::npos) {
+                return G531BT;
+        } else {
+                return G531H;
+        }
+}
+
+device_variant find_device_variant() {
+	bootloader = property_get("ro.bootloader");
+	return match(bootloader);
+}
+
 void vendor_load_properties()
 {
-    std::string bootloader = property_get("ro.bootloader");
 
-    if (bootloader.find("G360H") != std::string::npos) {
-        /* core33gdd */
-        property_set("ro.product.model", "SM-G360H");
-        property_set("ro.product.device", "core33g");
-    } else if (bootloader.find("G360HU") != std::string::npos) {
-        /* core33gdc */
-        property_set("ro.product.model", "SM-G360HU");
-        property_set("ro.product.device", "core33g");
-    } else if (bootloader.find("G361H") != std::string::npos) {
-        /* coreprimeve3gxx */
-        property_set("ro.product.model", "SM-G361H");
-        property_set("ro.product.device", "coreprimeve3g");
-    } else if (bootloader.find("G531BT") != std::string::npos) {
-        /* grandprimeve3gdtv */
-        property_set("ro.product.model", "SM-G531BT");
-        property_set("ro.product.device", "grandprimeve3gdtv");
-    } else {
-        /* grandprimeve3gxx */
-        property_set("ro.product.model", "SM-G531H");
-        property_set("ro.product.device", "grandprimeve3g");
-    }
+	device_variant variant = find_device_variant();
 
-    std::string device = property_get("ro.product.device");
-    ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
+	switch (variant) {
+		case G360H:
+		        /* core33gdd */
+		        property_set("ro.product.model", "SM-G360H");
+        		property_set("ro.product.device", "core33g");
+			break;
+		case G360HU:
+		        /* core33gdc */
+		        property_set("ro.product.model", "SM-G360HU");
+		        property_set("ro.product.device", "core33g");
+			break;
+		case G361H:
+		        /* coreprimeve3gxx */
+		        property_set("ro.product.model", "SM-G361H");
+		        property_set("ro.product.device", "coreprimeve3g");
+			break;
+		case G531BT:
+		        /* grandprimeve3gdtv */
+        		property_set("ro.product.model", "SM-G531BT");
+		        property_set("ro.product.device", "grandprimeve3gdtv");
+			break;
+		case G531H:
+		default:
+		        /* grandprimeve3gxx */
+		        property_set("ro.product.model", "SM-G531H");
+		        property_set("ro.product.device", "grandprimeve3g");
+			break;
+	}
+
+	std::string device = property_get("ro.product.device");
+	ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
