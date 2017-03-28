@@ -78,11 +78,6 @@ TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 # healthd
 BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
 
-# Recovery
-BOARD_HAS_DOWNLOAD_MODE := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-BOARD_SUPPRESS_EMMC_WIPE := true
-
 # Use dmalloc() for such low memory devices like us
 MALLOC_SVELTE := true
 BOARD_USES_LEGACY_MMAP := true
