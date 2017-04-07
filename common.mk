@@ -124,7 +124,6 @@ PRODUCT_PACKAGES += \
 	p2p_supplicant.rc \
 	phoneserver.rc \
 	refnotify.rc \
-	rild.rc \
 	set_mac.rc \
 	smd_symlink.rc \
 	swap.rc \
