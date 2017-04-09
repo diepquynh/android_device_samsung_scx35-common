@@ -76,6 +76,7 @@ TARGET_POWERHAL_VARIANT := scx35
 BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
 
 # Init
+TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_sec
 
 # Enable dex-preoptimization to speed up the first boot sequence
