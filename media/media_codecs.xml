@@ -88,7 +88,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
+            <Limit name="blocks-per-second" range="1-491520" />
             <Limit name="bitrate" range="1-40000000" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
@@ -100,7 +100,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
+            <Limit name="blocks-per-second" range="1-491520" />
             <Limit name="bitrate" range="1-40000000" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
@@ -111,7 +111,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
+            <Limit name="blocks-per-second" range="1-491520" />
             <Limit name="bitrate" range="1-50000000" />
 	    <Limit name="concurrent-instances" max="16" />
             <Feature name="adaptive-playback" />
@@ -123,7 +123,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="64x64" max="1920x1088" />
             <Limit name="alignment" value="2x2" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
+            <Limit name="blocks-per-second" range="1-491520" />
             <Limit name="bitrate" range="1-40000000" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
@@ -144,7 +144,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="12-245760" />
+            <Limit name="blocks-per-second" range="12-491520" />
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
         <MediaCodec name="OMX.sprd.h263.encoder" type="video/3gpp">
@@ -153,7 +153,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="12-245760" />
+            <Limit name="blocks-per-second" range="12-491520" />
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
         <MediaCodec name="OMX.sprd.h264.encoder" type="video/avc">         
@@ -162,7 +162,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="size" min="176x144" max="1920x1088" />
             <Limit name="alignment" value="16x16" />
             <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-245760" />
+            <Limit name="blocks-per-second" range="1-491520" />
             <Limit name="bitrate" range="1-40000000" />
         </MediaCodec>
     </Encoders>
