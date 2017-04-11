@@ -39,7 +39,10 @@
 
 #define SCALING_GOVERNOR_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
 #define CPU_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
-#define SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq"
+#define CPU0_SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq"
+#define CPU1_SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq"
+#define CPU2_SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq"
+#define CPU3_SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq"
 #define SCALING_MIN_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq"
 #define PANEL_BRIGHTNESS "/sys/class/backlight/panel/brightness"
 
@@ -225,17 +228,26 @@ static void set_power_profile(struct samsung_power_module *samsung_pwr,
 	switch (profile) {
 	case PROFILE_POWER_SAVE:
 		// Limit to min freq
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
+		sysfs_write(CPU0_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
+		sysfs_write(CPU1_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
+		sysfs_write(CPU2_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
+		sysfs_write(CPU3_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
 		ALOGD("%s: set powersave mode", __func__);
 		break;
 	case PROFILE_BALANCED:
 		// Limit to hispeed freq
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
+		sysfs_write(CPU0_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
+		sysfs_write(CPU1_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
+		sysfs_write(CPU2_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
+		sysfs_write(CPU3_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
 		ALOGD("%s: set balanced mode", __func__);
 		break;
 	case PROFILE_HIGH_PERFORMANCE:
 		// Restore normal max freq
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
+		sysfs_write(CPU0_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
+		sysfs_write(CPU1_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
+		sysfs_write(CPU2_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
+		sysfs_write(CPU3_SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
 		ALOGD("%s: set performance mode", __func__);
 		break;
 	}
