@@ -73,6 +73,10 @@ PRODUCT_PACKAGES += \
 
 # Audio
 PRODUCT_PACKAGES += \
+	audio_hw.xml \
+	audio_para \
+	audio_policy.conf \
+	codecs_pga.xml \
 	audio.primary.sc8830 \
 	libaudio-resampler \
 	libatchannel_wrapper
