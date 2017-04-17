@@ -312,8 +312,4 @@
 
     <!-- Configuration to support SIM contact batch operation -->
     <bool name="config_sim_phonebook_batch_operation">false</bool>
-
-    <!-- Allow Flashlight service to use wakelock -->
-    <bool name="flashlight_use_wakelock">true</bool>
-
 </resources>
