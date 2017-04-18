@@ -10,8 +10,8 @@
      <ctl name="DACL Playback Volume" val="7" />
      <ctl name="DACR Playback Volume" val="7" />
 
-     <ctl name="HPL CG Playback Volume1" val="10" />
-     <ctl name="HPR CG Playback Volume1" val="10" />
+     <ctl name="HPL CG Playback Volume1" val="63" />
+     <ctl name="HPR CG Playback Volume1" val="63" />
      <ctl name="HPL CG Playback Volume2" val="7" />
      <ctl name="HPR CG Playback Volume2" val="7" />
 
