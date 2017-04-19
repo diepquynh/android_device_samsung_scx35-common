@@ -99,6 +99,35 @@ void vendor_load_properties()
 			break;
 	}
 
+	/*
+	 * Now is the fun part: Single SIM varian
+	 */
+
+	FILE* file;
+	char* simslot_count_path = "/proc/simslot_count";
+	char simslot_count[PROP_NAME_MAX] = "\0"; // Terminate NULL character
+
+	file = fopen(simslot_count_path, "r");
+	if (file != NULL) {
+		simslot_count[0] = fgetc(file);
+		property_set("ro.multisim.simslotcount", simslot_count);
+
+		if(!strcmp(simslot_count, "0") || !strcmp(simslot_count, "1")) {
+			// If only one SIM slot is detected, treat as single-SIM device
+			property_set("persist.dsds.enabled", "false");
+			property_set("persist.radio.multisim.config", "none");
+		} else {
+			// Dual-SIM device
+			property_set("persist.dsds.enabled", "true");
+			property_set("persist.radio.multisim.config", "dsds");
+		}
+		// Close the file after using it
+		fclose(file);
+	} else {
+		// If can't open /proc/simslot_count, print an error!
+		ERROR("Could not open '%s'\n", simslot_count_path);
+	}
+
 	std::string device = property_get("ro.product.device");
 	ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
