@@ -312,4 +312,7 @@
 
     <!-- Configuration to support SIM contact batch operation -->
     <bool name="config_sim_phonebook_batch_operation">false</bool>
+
+    <!-- Indicates whether round icons should be parsed from the application manifest. -->
+    <bool name="config_useRoundIcon">true</bool>
 </resources>
