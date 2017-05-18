@@ -135,7 +135,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
 	macloader \
 	libandroid_net \
-	libwpa_client
+	libwpa_client \
+	wificond \
+	wifilogd
 
 # Disable mobile data on first boot
 PRODUCT_PROPERTY_OVERRIDES += \
