@@ -2,4 +2,6 @@
 PRODUCT_PACKAGES += \
 	macloader \
 	libandroid_net \
-	libwpa_client
+	libwpa_client \
+	wificond \
+	wifilogd
