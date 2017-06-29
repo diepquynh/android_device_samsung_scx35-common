@@ -8,6 +8,3 @@ PRODUCT_PACKAGES += \
 	audio.primary.sc8830 \
 	libaudio-resampler \
 	libatchannel_wrapper
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	audio.deep_buffer.media=true
