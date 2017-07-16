@@ -1,8 +1,8 @@
 on boot
     mkdir /data/system/gps 0771 system system
 
-    chown system system /dev/ttyS2
-    chmod 0660 /dev/ttyS2
+    chown system system /dev/ttyS3
+    chmod 0660 /dev/ttyS3
 
     chown system system /sys/class/sec/gps/GPS_PWR_EN/value
     chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
