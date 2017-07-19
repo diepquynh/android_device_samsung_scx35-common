@@ -15,6 +15,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.product.locale.language=en \
 	ro.product.locale.region=GB
 
+# Disable mobile data on first boot
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.com.android.mobiledata=false
+
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
 PRODUCT_PROPERTY_OVERRIDES += \
