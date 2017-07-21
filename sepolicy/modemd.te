@@ -1,0 +1,5 @@
+allow rild servicemanager:dir search;
+allow rild servicemanager:file { read open };
+allow rild system_app:dir search;
+allow rild system_app:file { read open };
+allow rild prod_file:dir search;

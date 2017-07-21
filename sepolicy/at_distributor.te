@@ -1,0 +1,1 @@
+allow at_distributor unlabeled:file r_file_perms;

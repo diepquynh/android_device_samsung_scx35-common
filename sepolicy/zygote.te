@@ -1,3 +1,5 @@
+set_prop(zygote, media_prop);
+
 allow zygote cpuctl_device:dir search;
 #allow zygote device:chr_file { open read write getattr ioctl };
 #allow zygote media_app:binder { call transfer };
@@ -16,3 +18,4 @@ allow zygote system_data_file:dir { create setattr };
 allow zygote system_prop:property_service set;
 #allow zygote system:unix_stream_socket { read write };
 allow zygote kernel:system module_request;
+allow zygote device:file { open read write getattr };

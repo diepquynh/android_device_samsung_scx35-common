@@ -1,0 +1,6 @@
+set_prop(audioserver, media_prop)
+allow audioserver proc_pin_switch:file { read write open };
+allow audioserver proc_pin_switch:dir search;
+allow audioserver radio_device:chr_file { read write open };
+allow audioserver rild:unix_stream_socket connectto;
+allow audioserver system_file:file execmod;

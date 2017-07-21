@@ -27,3 +27,6 @@ allow rild engpc:unix_stream_socket connectto;
 
 allow rild rild_exec:file entrypoint;
 allow rild self:capability { fsetid fowner chown };
+
+allow rild unlabeled:file { read write open getattr setattr };
+allow rild unlabeled:dir search;
