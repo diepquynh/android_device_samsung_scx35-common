@@ -24,6 +24,10 @@ LOCAL_SHARED_LIBRARIES := liblog libcutils
 LOCAL_SRC_FILES := power_scx35.c
 LOCAL_MODULE_TAGS := optional
 
+ifneq ($(TARGET_TAP_TO_WAKE_NODE),)
+    LOCAL_CFLAGS := -DTARGET_TAP_TO_WAKE_NODE=\"$(TARGET_TAP_TO_WAKE_NODE)\"
+endif
+
 include $(BUILD_SHARED_LIBRARY)
 
 endif
