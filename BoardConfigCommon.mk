@@ -39,6 +39,9 @@ USE_SPRD_DITHER := true
 USE_SPRD_HWCOMPOSER := true
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 
+# HIDL
+DEVICE_MANIFEST_FILE := device/samsung/scx35-common/configs/manifest.xml
+
 # Codecs
 BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
 
