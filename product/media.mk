@@ -6,7 +6,3 @@ MEDIA_XML_CONFIGS := \
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(MEDIA_XML_CONFIGS),$(f):system/etc/$(notdir $(f)))
-
-PRODUCT_PACKAGES += \
-	media_codecs.xml \
-	media_codecs_performance.xml
