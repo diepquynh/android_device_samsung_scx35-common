@@ -91,7 +91,6 @@ PRODUCT_PACKAGES += \
 	dns.rc \
 	engpc.rc \
 	gpsd.rc \
-	hostapd.rc \
 	kill_phone.rc \
 	macloader.rc \
 	mediacodec.rc \
