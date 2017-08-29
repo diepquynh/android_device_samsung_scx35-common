@@ -45,6 +45,9 @@ DEVICE_MANIFEST_FILE := device/samsung/scx35-common/configs/manifest.xml
 # Codecs
 BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
 
+# seccomp
+BOARD_SECCOMP_POLICY := device/samsung/scx35-common/seccomp
+
 # Kernel
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/scx35-common/mkbootimg.mk
 BOARD_KERNEL_BASE := 0x00000000
