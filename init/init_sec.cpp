@@ -29,10 +29,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "vendor_init.h"
+#include "android-base/properties.h"
 #include "property_service.h"
 #include "log.h"
-#include "util.h"
+#include "vendor_init.h"
+
+using namespace android::base;
 
 std::string bootloader;
 std::string device;
@@ -61,7 +63,7 @@ device_variant match(std::string bl)
 }
 
 device_variant find_device_variant() {
-	bootloader = property_get("ro.bootloader");
+	bootloader = GetProperty("ro.bootloader", "");
 	return match(bootloader);
 }
 
@@ -73,29 +75,29 @@ void vendor_load_properties()
 	switch (variant) {
 		case G360H:
 		        /* core33gdd */
-		        property_set("ro.product.model", "SM-G360H");
-        		property_set("ro.product.device", "core33g");
+		        SetProperty("ro.product.model", "SM-G360H");
+        		SetProperty("ro.product.device", "core33g");
 			break;
 		case G360HU:
 		        /* core33gdc */
-		        property_set("ro.product.model", "SM-G360HU");
-		        property_set("ro.product.device", "core33g");
+		        SetProperty("ro.product.model", "SM-G360HU");
+		        SetProperty("ro.product.device", "core33g");
 			break;
 		case G361H:
 		        /* coreprimeve3gxx */
-		        property_set("ro.product.model", "SM-G361H");
-		        property_set("ro.product.device", "coreprimeve3g");
+		        SetProperty("ro.product.model", "SM-G361H");
+		        SetProperty("ro.product.device", "coreprimeve3g");
 			break;
 		case G531BT:
 		        /* grandprimeve3gdtv */
-        		property_set("ro.product.model", "SM-G531BT");
-		        property_set("ro.product.device", "grandprimeve3gdtv");
+        		SetProperty("ro.product.model", "SM-G531BT");
+		        SetProperty("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
 		default:
 		        /* grandprimeve3gxx */
-		        property_set("ro.product.model", "SM-G531H");
-		        property_set("ro.product.device", "grandprimeve3g");
+		        SetProperty("ro.product.model", "SM-G531H");
+		        SetProperty("ro.product.device", "grandprimeve3g");
 			break;
 	}
 
@@ -110,24 +112,21 @@ void vendor_load_properties()
 	file = fopen(simslot_count_path, "r");
 	if (file != NULL) {
 		simslot_count[0] = fgetc(file);
-		property_set("ro.multisim.simslotcount", simslot_count);
+		SetProperty("ro.multisim.simslotcount", simslot_count);
 
 		if(!strcmp(simslot_count, "0") || !strcmp(simslot_count, "1")) {
 			// If only one SIM slot is detected, treat as single-SIM device
-			property_set("persist.dsds.enabled", "false");
-			property_set("persist.radio.multisim.config", "none");
+			SetProperty("persist.dsds.enabled", "false");
+			SetProperty("persist.radio.multisim.config", "none");
 		} else {
 			// Dual-SIM device
-			property_set("persist.dsds.enabled", "true");
-			property_set("persist.radio.multisim.config", "dsds");
+			SetProperty("persist.dsds.enabled", "true");
+			SetProperty("persist.radio.multisim.config", "dsds");
 		}
 		// Close the file after using it
 		fclose(file);
 	} else {
 		// If can't open /proc/simslot_count, print an error!
-		ERROR("Could not open '%s'\n", simslot_count_path);
+		PLOG(ERROR) << "Could not open " << simslot_count_path << std::endl;
 	}
-
-	std::string device = property_get("ro.product.device");
-	ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
