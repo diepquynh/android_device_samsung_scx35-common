@@ -14,5 +14,5 @@ TARGET_POWERHAL_VARIANT := scx35
 WITHOUT_CHECK_API := true
 
 # Malloc implementation
-MALLOC_SVELTE := true
-BOARD_USES_LEGACY_MMAP := true
+#MALLOC_SVELTE := true
+#BOARD_USES_LEGACY_MMAP := true
