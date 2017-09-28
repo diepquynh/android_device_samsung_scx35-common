@@ -35,6 +35,9 @@ on post-fs-data
 on boot
     setprop wifi.interface wlan0
 
+# Wifi firmware reload path
+    chown wifi wifi /sys/module/dhd/parameters/firmware_path
+
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
     chmod 0664 /data/.cid.info
