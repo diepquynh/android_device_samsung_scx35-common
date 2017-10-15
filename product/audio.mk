@@ -7,5 +7,4 @@ PRODUCT_PACKAGES += \
 	codec_pga.xml \
 	tiny_hw.xml \
 	audio.primary.sc8830 \
-	libaudio-resampler \
-	libatchannel_wrapper
+	libaudio-resampler

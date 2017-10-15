@@ -100,7 +100,7 @@ void vendor_load_properties()
 	}
 
 	/*
-	 * Now is the fun part: Single SIM varian
+	 * Now is the fun part: Single SIM variant
 	 */
 
 	FILE* file;

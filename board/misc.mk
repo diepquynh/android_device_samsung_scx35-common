@@ -1,6 +1,3 @@
-# Enable WEBGL in WebKit
-ENABLE_WEBGL := true
-
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
 
@@ -14,5 +11,4 @@ TARGET_POWERHAL_VARIANT := scx35
 WITHOUT_CHECK_API := true
 
 # Malloc implementation
-#MALLOC_SVELTE := true
-#BOARD_USES_LEGACY_MMAP := true
+MALLOC_SVELTE := true

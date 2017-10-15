@@ -1,5 +1,5 @@
 # Packages
 PRODUCT_PACKAGES += \
 	SamsungDoze \
-	Gello \
+	Jelly \
 	Snap
