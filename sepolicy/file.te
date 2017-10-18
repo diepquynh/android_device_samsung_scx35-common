@@ -9,3 +9,6 @@ type at_distributor, exec_type;
 type modemd, exec_type;
 type nvitemd_exec, exec_type, file_type;
 type refnotify_exec, exec_type, file_type;
+type gps_data_file, file_type, data_file_type;
+type wpa, domain;
+type wpa_exec, exec_type, file_type;
