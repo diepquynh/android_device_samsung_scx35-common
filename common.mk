@@ -39,7 +39,8 @@ PRODUCT_PACKAGES += \
 # Bluetooth
 PRODUCT_PACKAGES += \
 	libbluetooth_jni \
-	bluetooth.default
+	bluetooth.default \
+	libbt-vendor
 
 # Codecs
 PRODUCT_PACKAGES += \
