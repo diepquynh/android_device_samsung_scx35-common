@@ -5,6 +5,7 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     android.hardware.broadcastradio@1.0-impl \
     android.hardware.camera.provider@2.4-impl.legacy \
+	android.hardware.configstore@1.0-impl \
     android.hardware.drm@1.0-impl \
     android.hardware.gnss@1.0-impl \
     android.hardware.graphics.allocator@2.0-impl \
