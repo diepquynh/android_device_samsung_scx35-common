@@ -3,7 +3,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.camera.provider@2.4-impl.legacy \
 	camera.device@1.0-impl.legacy \
 	android.hardware.drm@1.0-impl \
-	android.hardware.gatekeeper@1.0-impl \
 	android.hardware.graphics.allocator@2.0-impl \
 	android.hardware.graphics.allocator@2.0-service \
 	android.hardware.graphics.composer@2.1-impl \
