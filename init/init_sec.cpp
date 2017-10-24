@@ -88,28 +88,29 @@ void vendor_load_properties()
 	switch (variant) {
 		case G360H:
 		        /* core33gdd */
-		        property_set("ro.product.model", "SM-G360H");
-        		property_set("ro.product.device", "core33g");
+		        property_override("ro.product.model", "SM-G360H");
+        		property_override("ro.product.device", "core33g");
 			break;
 		case G360HU:
 		        /* core33gdc */
-		        property_set("ro.product.model", "SM-G360HU");
-		        property_set("ro.product.device", "core33g");
+		        property_override("ro.product.model", "SM-G360HU");
+		        property_override("ro.product.device", "core33g");
 			break;
 		case G361H:
 		        /* coreprimeve3gxx */
-		        property_set("ro.product.model", "SM-G361H");
-		        property_set("ro.product.device", "coreprimeve3g");
+		        property_override("ro.product.model", "SM-G361H");
+		        property_override("ro.product.device", "coreprimeve3g");
 			break;
 		case G531BT:
 		        /* grandprimeve3gdtv */
-        		property_set("ro.product.model", "SM-G531BT");
-		        property_set("ro.product.device", "grandprimeve3gdtv");
+        		property_override("ro.product.model", "SM-G531BT");
+		        property_override("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
-		        /* grandprimeve3gxx */
-		        property_set("ro.product.model", "SM-G531H");
-		        property_set("ro.product.device", "grandprimeve3g");
+				/* grandprimeve3gxx */
+		        property_override("ro.product.model", "SM-G531H");
+		        property_override("ro.product.device", "grandprimeve3g");
+			break;
 		default:
 			break;
 	}
@@ -125,16 +126,16 @@ void vendor_load_properties()
 	file = fopen(simslot_count_path, "r");
 	if (file != NULL) {
 		simslot_count[0] = fgetc(file);
-		property_set("ro.multisim.simslotcount", simslot_count);
+		property_override("ro.multisim.simslotcount", simslot_count);
 
 		if(!strcmp(simslot_count, "0") || !strcmp(simslot_count, "1")) {
 			// If only one SIM slot is detected, treat as single-SIM device
-			property_set("persist.dsds.enabled", "false");
-			property_set("persist.radio.multisim.config", "none");
+			property_override("persist.dsds.enabled", "false");
+			property_override("persist.radio.multisim.config", "none");
 		} else {
 			// Dual-SIM device
-			property_set("persist.dsds.enabled", "true");
-			property_set("persist.radio.multisim.config", "dsds");
+			property_override("persist.dsds.enabled", "true");
+			property_override("persist.radio.multisim.config", "dsds");
 		}
 		// Close the file after using it
 		fclose(file);

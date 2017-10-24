@@ -73,7 +73,6 @@ WITHOUT_CHECK_API := true
 TARGET_HAS_BACKLIT_KEYS := false
 
 # Init
-TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_sec
 
 # Board specific features
