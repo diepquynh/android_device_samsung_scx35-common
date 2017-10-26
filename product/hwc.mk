@@ -6,7 +6,3 @@ PRODUCT_PACKAGES += \
 	sprd_gsp.sc8830 \
 	libmemoryheapion \
 	libion_sprd
-
-# SHIM mali GLES blob
-PRODUCT_PACKAGES += \
-	libpopcountsi2
