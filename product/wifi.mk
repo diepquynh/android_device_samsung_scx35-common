@@ -1,3 +1,5 @@
 # Wifi
 PRODUCT_PACKAGES += \
-	macloader
+	macloader \
+	libandroid_net \
+	libwpa_client

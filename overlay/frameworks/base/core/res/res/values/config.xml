@@ -41,18 +41,7 @@
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
     </integer-array>
 
-    <integer name="config_buttonBrightnessSettingDefault">0</integer>
-
-    <!-- Array of ConnectivityManager.TYPE_xxxx values allowable for tethering -->
-    <!-- Common options are [1, 4] for TYPE_WIFI and TYPE_MOBILE_DUN or
-    <!== [0,1,5,7] for TYPE_MOBILE, TYPE_WIFI, TYPE_MOBILE_HIPRI and TYPE_BLUETOOTH -->
-    <integer-array translatable="false" name="config_tether_upstream_types">
-        <item>0</item>
-        <item>1</item>
-        <item>4</item>
-        <item>5</item>
-        <item>7</item>
-    </integer-array>
+    <!-- integer name="config_buttonBrightnessSettingDefault">0</integer -->
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
@@ -155,7 +144,7 @@
     </integer-array>
 
     <!-- Boolean to enable stk functionality on Samsung phones -->
-    <bool name="config_samsung_stk">true</bool>
+    <!-- bool name="config_samsung_stk">true</bool> -->
 
     <!-- Whether WiFi display is supported by this device.
          There are many prerequisites for this feature to work correctly.
@@ -229,7 +218,7 @@
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
-    <integer name="config_deviceHardwareKeys">83</integer>
+    <!-- integer name="config_deviceHardwareKeys">83</integer> -->
 
      <!-- Hardware keys present on the device with the ability to wake, stored as a bit field.
           This integer should equal the sum of the corresponding value for each
@@ -243,7 +232,7 @@
              64 - Volume rocker
           For example, a device with Home, Back and Menu keys would set this
           config to 7. -->
-    <integer name="config_deviceHardwareWakeKeys">65</integer>
+    <!-- integer name="config_deviceHardwareWakeKeys">65</integer> -->
 
     <!-- Control the behavior when the user long presses the home button.
             0 - Nothing
@@ -255,7 +244,7 @@
          This needs to match the constants in
          policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
     -->
-    <integer name="config_longPressOnHomeBehavior">4</integer>
+    <!-- integer name="config_longPressOnHomeBehavior">4</integer> -->
 
     <!-- Control the behavior when the user long presses the app switch button.
             0 - Nothing
@@ -267,7 +256,7 @@
          This needs to match the constants in
          services/core/java/com/android/server/policy/policy/impl/PhoneWindowManager.java
     -->
-    <integer name="config_longPressOnAppSwitchBehavior">1</integer>
+    <!-- integer name="config_longPressOnAppSwitchBehavior">1</integer> -->
 
     <!-- Ambient display. -->
     <integer name="config_screenBrightnessDoze">30</integer>
@@ -299,7 +288,7 @@
     <bool name="config_useSystemClockforRotationSensor">true</bool>
 
     <!-- Configuration to support SIM contact batch operation -->
-    <bool name="config_sim_phonebook_batch_operation">false</bool>
+    <!-- bool name="config_sim_phonebook_batch_operation">false</bool> -->
 
     <!-- Indicates whether round icons should be parsed from the application manifest. -->
     <bool name="config_useRoundIcon">true</bool>

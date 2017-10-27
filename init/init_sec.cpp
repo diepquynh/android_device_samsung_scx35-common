@@ -25,14 +25,18 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
+#include <sys/_system_properties.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
+#include <android-base/properties.h>
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
-#include "util.h"
+
+using namespace android::base;
 
 std::string bootloader;
 std::string device;
@@ -61,8 +65,19 @@ device_variant match(std::string bl)
 }
 
 device_variant find_device_variant() {
-	bootloader = property_get("ro.bootloader");
+	bootloader = GetProperty("ro.bootloader", "");
 	return match(bootloader);
+}
+
+void property_override(char const prop[], char const value[])
+{
+    prop_info *pi;
+
+    pi = (prop_info*) __system_property_find(prop);
+    if (pi)
+        __system_property_update(pi, value, strlen(value));
+    else
+        __system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
 void vendor_load_properties()
@@ -73,29 +88,30 @@ void vendor_load_properties()
 	switch (variant) {
 		case G360H:
 		        /* core33gdd */
-		        property_set("ro.product.model", "SM-G360H");
-        		property_set("ro.product.device", "core33g");
+		        property_override("ro.product.model", "SM-G360H");
+        		property_override("ro.product.device", "core33g");
 			break;
 		case G360HU:
 		        /* core33gdc */
-		        property_set("ro.product.model", "SM-G360HU");
-		        property_set("ro.product.device", "core33g");
+		        property_override("ro.product.model", "SM-G360HU");
+		        property_override("ro.product.device", "core33g");
 			break;
 		case G361H:
 		        /* coreprimeve3gxx */
-		        property_set("ro.product.model", "SM-G361H");
-		        property_set("ro.product.device", "coreprimeve3g");
+		        property_override("ro.product.model", "SM-G361H");
+		        property_override("ro.product.device", "coreprimeve3g");
 			break;
 		case G531BT:
 		        /* grandprimeve3gdtv */
-        		property_set("ro.product.model", "SM-G531BT");
-		        property_set("ro.product.device", "grandprimeve3gdtv");
+        		property_override("ro.product.model", "SM-G531BT");
+		        property_override("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
+				/* grandprimeve3gxx */
+		        property_override("ro.product.model", "SM-G531H");
+		        property_override("ro.product.device", "grandprimeve3g");
+			break;
 		default:
-		        /* grandprimeve3gxx */
-		        property_set("ro.product.model", "SM-G531H");
-		        property_set("ro.product.device", "grandprimeve3g");
 			break;
 	}
 
@@ -110,24 +126,21 @@ void vendor_load_properties()
 	file = fopen(simslot_count_path, "r");
 	if (file != NULL) {
 		simslot_count[0] = fgetc(file);
-		property_set("ro.multisim.simslotcount", simslot_count);
+		property_override("ro.multisim.simslotcount", simslot_count);
 
 		if(!strcmp(simslot_count, "0") || !strcmp(simslot_count, "1")) {
 			// If only one SIM slot is detected, treat as single-SIM device
-			property_set("persist.dsds.enabled", "false");
-			property_set("persist.radio.multisim.config", "none");
+			property_override("persist.dsds.enabled", "false");
+			property_override("persist.radio.multisim.config", "none");
 		} else {
 			// Dual-SIM device
-			property_set("persist.dsds.enabled", "true");
-			property_set("persist.radio.multisim.config", "dsds");
+			property_override("persist.dsds.enabled", "true");
+			property_override("persist.radio.multisim.config", "dsds");
 		}
 		// Close the file after using it
 		fclose(file);
 	} else {
-		// If can't open /proc/simslot_count, print an error!
-		ERROR("Could not open '%s'\n", simslot_count_path);
+		// If can't open /proc/simslot_count, do nothing
+		return;
 	}
-
-	std::string device = property_get("ro.product.device");
-	ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }

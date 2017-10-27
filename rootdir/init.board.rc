@@ -25,7 +25,7 @@ on boot
 # bluetooth
     # UART0 device
     chmod 660 /dev/ttyS0
-    chown bluetooth net_bt_stack /dev/ttyS0
+    chown bluetooth bluetooth /dev/ttyS0
 
     chmod 660 /proc/bluetooth/sleep/proto
     chmod 660 /sys/class/rfkill/rfkill0/state
@@ -36,7 +36,7 @@ on boot
     chown bluetooth system /proc/bluetooth/sleep/proto
     chmod 660 /proc/bluetooth/sleep/btwrite
     chmod 660 /proc/bluetooth/sleep/lpm
-    chown bluetooth net_bt_stack /sys/devices/platform/sprd_wcn.0/pa_enable
+    chown bluetooth bluetooth /sys/devices/platform/sprd_wcn.0/pa_enable
     chown bluetooth system /proc/bluetooth/sleep/btwrite
     chown bluetooth system /proc/bluetooth/sleep/lpm
     mkdir /data/misc/wifi 0770 wifi wifi
