@@ -19,6 +19,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.mobiledata=false
 
+# Disable treble OMX
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.media.treble_omx=false
+
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
 PRODUCT_PROPERTY_OVERRIDES += \
