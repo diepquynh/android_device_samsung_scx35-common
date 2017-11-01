@@ -97,12 +97,12 @@ PRODUCT_PACKAGES += \
 	modem_control.rc \
 	modemd.rc \
 	nvitemd.rc \
-	p2p_supplicant.rc \
 	phoneserver.rc \
 	refnotify.rc \
 	set_mac.rc \
 	smd_symlink.rc \
-	swap.rc
+	swap.rc \
+	wpa_supplicant.rc
 
 # Rootdir files
 PRODUCT_PACKAGES += \
