@@ -48,6 +48,9 @@ BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
 # seccomp
 BOARD_SECCOMP_POLICY := device/samsung/scx35-common/seccomp
 
+# Binder API version
+TARGET_USES_64_BIT_BINDER := true
+
 # Kernel
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/scx35-common/mkbootimg.mk
 BOARD_KERNEL_BASE := 0x00000000
@@ -102,4 +105,4 @@ WITH_DEXPREOPT := true
 WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
 
 # SELinux policy
-BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
+#BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
