@@ -14,7 +14,7 @@ PRODUCT_PACKAGES += \
 	android.hardware.light@2.0-impl \
 	android.hardware.memtrack@1.0-impl \
 	android.hardware.power@1.0-impl \
-	android.hardware.radio@1.0-impl \
+	android.hardware.radio@1.0 \
 	android.hardware.radio.deprecated@1.0 \
 	android.hardware.renderscript@1.0-impl \
 	android.hardware.sensors@1.0-impl \
