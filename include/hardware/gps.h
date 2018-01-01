@@ -394,7 +394,6 @@ typedef struct {
     float   azimuth;
     /** SAMSUNG **/
     int used;
-	int padding;
 } GpsSvInfo;
 
 typedef struct {
