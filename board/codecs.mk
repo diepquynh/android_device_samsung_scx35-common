@@ -1,2 +1,0 @@
-# Codecs
-BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
