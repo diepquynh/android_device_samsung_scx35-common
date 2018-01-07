@@ -94,5 +94,9 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 CHARGING_ENABLED_PATH := /sys/class/power_supply/battery/batt_lp_charging
 BACKLIGHT_PATH := /sys/class/backlight/panel/brightness
 
+# Enable dex-preoptimization to speed up first boot sequence
+WITH_DEXPREOPT := true
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
+
 # SELinux policy
 BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
