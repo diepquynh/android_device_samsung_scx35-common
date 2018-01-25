@@ -4,6 +4,14 @@
 # add for board-relative touch screen driver for
 # alarm mode and normal mode.
 
+on early-boot
+
+# radio pipe
+    mkdir /dev/rpipe 0550 radio radio
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.0 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.1 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.2 p
+
 on boot
 
     write /sys/class/gpio/export 167
