@@ -64,9 +64,6 @@ TARGET_POWERHAL_VARIANT := scx35
 # Build system
 WITHOUT_CHECK_API := true
 
-# Malloc implementation
-MALLOC_SVELTE := true
-
 # Lights
 TARGET_HAS_BACKLIT_KEYS := false
 
