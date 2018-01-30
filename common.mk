@@ -114,8 +114,7 @@ PRODUCT_PACKAGES += \
 # Packages
 PRODUCT_PACKAGES += \
 	SamsungDoze \
-	Jelly \
-	Snap
+	Jelly
 
 # Lights
 PRODUCT_PACKAGES += \
