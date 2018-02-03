@@ -92,10 +92,11 @@ void vendor_load_properties()
 		        property_set("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
-		default:
 		        /* grandprimeve3gxx */
 		        property_set("ro.product.model", "SM-G531H");
 		        property_set("ro.product.device", "grandprimeve3g");
+			break;
+		default:
 			break;
 	}
 
