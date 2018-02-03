@@ -37,17 +37,26 @@
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
-#define SCALING_GOVERNOR_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
-#define CPU_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
-#define SCALING_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq"
-#define SCALING_MIN_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq"
+#define PARAM_MAXLEN      10
+
+#define CPU_SYSFS_PATH      "/sys/devices/system/cpu"
+#define CPUFREQ_SYSFS_PATH  CPU_SYSFS_PATH "/cpufreq/"
+
+#define SCALING_GOVERNOR_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_governor"
+#define CPU_MAX_FREQ_PATH       CPU_SYSFS_PATH "/cpu0/cpufreq/cpuinfo_max_freq"
+#define SCALING_MAX_FREQ_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_max_freq"
+#define SCALING_MIN_FREQ_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_min_freq"
 #define PANEL_BRIGHTNESS "/sys/class/backlight/panel/brightness"
+
+/* Interactive governor */
+#define HISPEED_FREQ_PATH "/hispeed_freq"
+#define IO_IS_BUSY_PATH   "/io_is_busy"
+#define BOOSTPULSE_PATH   "/boostpulse"
 
 struct samsung_power_module {
 	struct power_module base;
 	pthread_mutex_t lock;
 	int boostpulse_fd;
-	int boostpulse_warned;
 	char cpu_hispeed_freq[10];
 	char cpu_min_freq[10];
 	char cpu_max_freq[10];
@@ -57,9 +66,7 @@ struct samsung_power_module {
 };
 
 static char governor[20];
-static char CPU_HISPEED_FREQ_PATH[80];
-static char IO_IS_BUSY_PATH[80];
-static char BOOSTPULSE_PATH[80];
+static char CPU_INTERACTIVE_PATH[80];
 
 enum power_profile_e {
 	PROFILE_POWER_SAVE = 0,
@@ -143,25 +150,33 @@ static int get_scaling_governor() {
 	return 0;
 }
 
-static int get_sysfs_path() {
-
-	if (get_scaling_governor() < 0) {
-		return -1;
-	} else {
-		if (strncmp(governor, "interactive", 11) == 0) {
-			strcpy(CPU_HISPEED_FREQ_PATH, "/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq");
-			strcpy(IO_IS_BUSY_PATH, "/sys/devices/system/cpu/cpufreq/interactive/io_is_busy");
-			strcpy(BOOSTPULSE_PATH, "/sys/devices/system/cpu/cpufreq/interactive/boostpulse");
-		} else if (strncmp(governor, "intelliactive", 13) == 0) {
-			strcpy(CPU_HISPEED_FREQ_PATH, "/sys/devices/system/cpu/cpufreq/intelliactive/hispeed_freq");
-			strcpy(IO_IS_BUSY_PATH, "/sys/devices/system/cpu/cpufreq/intelliactive/io_is_busy");
-			strcpy(BOOSTPULSE_PATH, "/sys/devices/system/cpu/cpufreq/intelliactive/boostpulse");
+static void get_cpu_interactive_paths()
+{
+	if (get_scaling_governor() == 0) {
+		if (strncmp(governor, "interactive", 11) == 0 || strncmp(governor, "intelliactive", 13) == 0) {
+			sprintf(CPU_INTERACTIVE_PATH, "%s%s", CPUFREQ_SYSFS_PATH, governor);
+			ALOGI("Current interactive governor is: %s", governor);
 		}
 	}
 
-	return 0;
 }
-	
+
+static void cpu_interactive_read(const char *param, char s[PARAM_MAXLEN])
+{
+    char path[PATH_MAX];
+
+	sprintf(path, "%s%s", CPU_INTERACTIVE_PATH, param);
+	sysfs_read(path, s, PARAM_MAXLEN);
+}
+
+static void cpu_interactive_write(const char *param, char s[PARAM_MAXLEN])
+{
+    char path[PATH_MAX];
+
+    sprintf(path, "%s%s", CPU_INTERACTIVE_PATH, param);
+    sysfs_write(path, s);
+}
+
 static unsigned int read_panel_brightness() {
 
 	unsigned int i, ret = 0;
@@ -186,28 +201,31 @@ static unsigned int read_panel_brightness() {
 	return ret;
 }
 
+static void boostpulse_open(struct samsung_power_module *samsung_pwr)
+{
+    samsung_pwr->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
+    if (samsung_pwr->boostpulse_fd < 0) {
+        ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, strerror(errno));
+    }
+}
+
+static void send_boostpulse(int boostpulse_fd)
+{
+	int len;
+
+    if (boostpulse_fd < 0) {
+        return;
+    }
+
+    len = write(boostpulse_fd, "1", 1);
+    if (len < 0) {
+        ALOGE("Error writing to %s: %s", BOOSTPULSE_PATH, strerror(errno));
+    }
+}
+
 /**********************************************************
  *** POWER FUNCTIONS
  **********************************************************/
-
-/* You need to request the powerhal lock before calling this function */
-static int boostpulse_open(struct samsung_power_module *samsung_pwr) {
-
-	char errno_str[64];
-
-	if (samsung_pwr->boostpulse_fd < 0) {
-		samsung_pwr->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
-		if (samsung_pwr->boostpulse_fd < 0) {
-			if (!samsung_pwr->boostpulse_warned) {
-				strerror_r(errno, errno_str, sizeof(errno_str));
-				ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, errno_str);
-				samsung_pwr->boostpulse_warned = 1;
-			}
-		}
-	}
-
-	return samsung_pwr->boostpulse_fd;
-}
 
 static void set_power_profile(struct samsung_power_module *samsung_pwr,
                               enum power_profile_e profile)
@@ -321,8 +339,7 @@ static void init_cpufreqs(struct samsung_power_module *samsung_pwr) {
 
 	sysfs_read(SCALING_MIN_FREQ_PATH, samsung_pwr->cpu_min_freq,
 		   sizeof(samsung_pwr->cpu_min_freq));
-	sysfs_read(CPU_HISPEED_FREQ_PATH, samsung_pwr->cpu_hispeed_freq,
-		   sizeof(samsung_pwr->cpu_hispeed_freq));
+	cpu_interactive_read(HISPEED_FREQ_PATH,  samsung_pwr->cpu_hispeed_freq);
 	sysfs_read(CPU_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq,
 		   sizeof(samsung_pwr->cpu_max_freq));
 	ALOGV("%s: CPU min freq: %s\n", __func__, samsung_pwr->cpu_min_freq);
@@ -353,7 +370,7 @@ static void samsung_power_init(struct power_module *module) {
 	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
 
 	get_scaling_governor();
-	get_sysfs_path();
+	get_cpu_interactive_paths();
 	init_cpufreqs(samsung_pwr);
 	init_touch_input_power_path(samsung_pwr);
 }
@@ -429,7 +446,7 @@ static void samsung_power_set_interactive(struct power_module *module, int on) {
 	}
 
 out:
-	sysfs_write(IO_IS_BUSY_PATH, on ? "1" : "0");
+	cpu_interactive_write(IO_IS_BUSY_PATH, on ? "1" : "0");
 	ALOGV("power_set_interactive: %d done\n", on);
 }
 
@@ -489,17 +506,8 @@ static void samsung_power_hint(struct power_module *module,
 			}
 
 			ALOGV("%s: POWER_HINT_INTERACTION", __func__);
-
-			if (boostpulse_open(samsung_pwr) >= 0) {
-				len = write(samsung_pwr->boostpulse_fd, "1", 1);
-
-				if (len < 0) {
-					strerror_r(errno, errno_str, sizeof(errno_str));
-					ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, errno_str);
-				}
-			}
-
-		break;
+			send_boostpulse(samsung_pwr->boostpulse_fd);
+			break;
 		}
 		case POWER_HINT_VSYNC: {
 			ALOGV("%s: POWER_HINT_VSYNC", __func__);
@@ -529,7 +537,7 @@ static int samsung_get_feature(struct power_module *module __unused,
 	return -1;
 }
 
-static void samsung_set_feature(struct power_module *module, feature_t feature, int state)
+static void samsung_set_feature(struct power_module *module, feature_t feature, int __unused state)
 {
 
 	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
@@ -571,5 +579,4 @@ struct samsung_power_module HAL_MODULE_INFO_SYM = {
 
 	.lock = PTHREAD_MUTEX_INITIALIZER,
 	.boostpulse_fd = -1,
-	.boostpulse_warned = 0,
 };
