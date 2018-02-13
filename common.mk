@@ -141,6 +141,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.mobiledata=false
 
+# Disable treble OMX
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.media.treble_omx=false
+
 # ART device props
 PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.dex2oat-flags=--no-watch-dog
