@@ -193,6 +193,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.locationfeatures=1 \
 	ro.com.google.networklocation=1
 
+# sdcardfs
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.sys.sdcardfs=false
+
 # Dalvik heap config
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
