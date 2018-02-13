@@ -29,10 +29,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <android-base/properties.h>
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
-#include "util.h"
+
+using namespace android::base;
 
 std::string bootloader;
 std::string device;
@@ -61,7 +63,7 @@ device_variant match(std::string bl)
 }
 
 device_variant find_device_variant() {
-	bootloader = property_get("ro.bootloader");
+	bootloader = GetProperty("ro.bootloader", "");
 	return match(bootloader);
 }
 
@@ -95,7 +97,6 @@ void vendor_load_properties()
 		        /* grandprimeve3gxx */
 		        property_set("ro.product.model", "SM-G531H");
 		        property_set("ro.product.device", "grandprimeve3g");
-			break;
 		default:
 			break;
 	}
@@ -125,10 +126,7 @@ void vendor_load_properties()
 		// Close the file after using it
 		fclose(file);
 	} else {
-		// If can't open /proc/simslot_count, print an error!
-		ERROR("Could not open '%s'\n", simslot_count_path);
+		// If can't open /proc/simslot_count, do nothing
+		return;
 	}
-
-	std::string device = property_get("ro.product.device");
-	ERROR("Found bootloader id %s setting build properties for %s device\n", bootloader.c_str(), device.c_str());
 }
