@@ -75,6 +75,9 @@ WITHOUT_CHECK_API := true
 # Lights
 TARGET_HAS_BACKLIT_KEYS := false
 
+# Target shims
+TARGET_LD_SHIM_LIBS := /system/vendor/bin/gpsd|libgps_shim.so
+
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec
 
