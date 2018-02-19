@@ -17,9 +17,6 @@ LOCAL_PATH := device/samsung/scx35-common
 # Inherit from AOSP product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
 # Inherit from sprd-common device configuration
 $(call inherit-product, device/samsung/sprd-common/common.mk)
 
@@ -54,6 +51,9 @@ PRODUCT_PACKAGES += \
 	libstagefright_sprd_mp3dec
 
 # Media config
+PRODUCT_PACKAGES += \
+	media_codecs.xml
+
 MEDIA_XML_CONFIGS := \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml \
@@ -72,7 +72,9 @@ PRODUCT_PACKAGES += \
 # GPS
 PRODUCT_PACKAGES += \
 	libgpspc \
-	libefuse
+	libefuse \
+	gps.conf \
+	gps.xml
 
 # HWC
 PRODUCT_PACKAGES += \
@@ -135,7 +137,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-	macloader
+	macloader \
+	wpa_supplicant.conf \
+	wpa_supplicant_overlay.conf \
+	p2p_supplicant_overlay.conf
 
 # Disable mobile data on first boot
 PRODUCT_PROPERTY_OVERRIDES += \
