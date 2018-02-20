@@ -170,7 +170,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.networklocation=1
 
 # Dalvik heap config
-$(call inherit-product, frameworks/native/build/phone-hdpi-2048-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
 
 # For userdebug builds
