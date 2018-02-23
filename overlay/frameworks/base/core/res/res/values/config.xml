@@ -225,4 +225,9 @@
 
     <!-- Indicates whether round icons should be parsed from the application manifest. -->
     <bool name="config_useRoundIcon">true</bool>
+
+    <!-- Boolean indicating whether the HWC setColorTransform function can be performed efficiently
+         in hardware. -->
+    <bool name="config_setColorTransformAccelerated">true</bool>
+
 </resources>
