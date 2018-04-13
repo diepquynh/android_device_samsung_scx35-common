@@ -32,7 +32,7 @@
 
 #define LOG_TAG "SCX35PowerHAL"
 /* #define LOG_NDEBUG 0 */
-#include <utils/Log.h>
+#include <log/log.h>
 
 #include <hardware/hardware.h>
 #include <hardware/power.h>
@@ -52,19 +52,12 @@
 #define IO_IS_BUSY_PATH   "/io_is_busy"
 #define BOOSTPULSE_PATH   "/boostpulse"
 
-struct samsung_power_module {
-	struct power_module base;
-	pthread_mutex_t lock;
-	int boostpulse_fd;
-	char cpu_hispeed_freq[10];
-	char cpu_min_freq[10];
-	char cpu_max_freq[10];
+struct touch_path {
 	char* touchscreen_power_path;
 	char* touchkey_power_path;
 	bool touchkey_blocked;
 };
 
-static char governor[20];
 static char CPU_INTERACTIVE_PATH[80];
 
 enum power_profile_e {
@@ -130,11 +123,13 @@ static void sysfs_write(const char *path, char *s) {
 	close(fd);
 }
 
-static int get_scaling_governor() {
-    
+static void get_cpu_interactive_paths() {
+
+	char governor[20];
+
 	if (sysfs_read(SCALING_GOVERNOR_PATH, governor,
 		sizeof(governor)) == -1) {
-		return -1;
+		return;
 	} else {
 
         // Strip newline at the end.
@@ -146,18 +141,11 @@ static int get_scaling_governor() {
             governor[len--] = '\0';
 	}
 
-	return 0;
-}
-
-static void get_cpu_interactive_paths()
-{
-	if (get_scaling_governor() == 0) {
-		if (strncmp(governor, "interactive", 11) == 0 || strncmp(governor, "intelliactive", 13) == 0) {
-			sprintf(CPU_INTERACTIVE_PATH, "%s%s", CPUFREQ_SYSFS_PATH, governor);
-			ALOGI("Current interactive governor is: %s", governor);
-		}
+	if (strncmp(governor, "interactive", 11) == 0 ||
+		strncmp(governor, "intelliactive", 13) == 0) {
+		sprintf(CPU_INTERACTIVE_PATH, "%s%s", CPUFREQ_SYSFS_PATH, governor);
+		ALOGI("Current interactive governor is: %s", governor);
 	}
-
 }
 
 static void cpu_interactive_read(const char *param, char s[PARAM_MAXLEN])
@@ -200,14 +188,6 @@ static unsigned int read_panel_brightness() {
 	return ret;
 }
 
-static void boostpulse_open(struct samsung_power_module *samsung_pwr)
-{
-    samsung_pwr->boostpulse_fd = open(BOOSTPULSE_PATH, O_WRONLY);
-    if (samsung_pwr->boostpulse_fd < 0) {
-        ALOGE("Error opening %s: %s\n", BOOSTPULSE_PATH, strerror(errno));
-    }
-}
-
 static void send_boostpulse(int boostpulse_fd)
 {
 	int len;
@@ -226,12 +206,12 @@ static void send_boostpulse(int boostpulse_fd)
  *** POWER FUNCTIONS
  **********************************************************/
 
-static void set_power_profile(struct samsung_power_module *samsung_pwr,
-                              enum power_profile_e profile)
+static void set_power_profile(enum power_profile_e profile)
 {
 
-	int rc;
-	struct stat sb;
+	char cpu_hispeed_freq[10];
+	char cpu_min_freq[10];
+	char cpu_max_freq[10];
 
 	if (current_power_profile == profile) {
 		return;
@@ -242,20 +222,20 @@ static void set_power_profile(struct samsung_power_module *samsung_pwr,
 	switch (profile) {
 	case PROFILE_POWER_SAVE:
 		// Limit to min freq which was set through sysfs
-		sysfs_read(SCALING_MIN_FREQ_PATH, samsung_pwr->cpu_min_freq,
-				   sizeof(samsung_pwr->cpu_min_freq));
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_min_freq);
+		sysfs_read(SCALING_MIN_FREQ_PATH, cpu_min_freq,
+				   sizeof(cpu_min_freq));
+		sysfs_write(SCALING_MAX_FREQ_PATH, cpu_min_freq);
 		ALOGD("%s: set powersave mode", __func__);
 		break;
 	case PROFILE_BALANCED:
 		// Limit to hispeed freq
-		cpu_interactive_read(HISPEED_FREQ_PATH,  samsung_pwr->cpu_hispeed_freq);
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_hispeed_freq);
+		cpu_interactive_read(HISPEED_FREQ_PATH, cpu_hispeed_freq);
+		sysfs_write(SCALING_MAX_FREQ_PATH, cpu_hispeed_freq);
 		ALOGD("%s: set balanced mode", __func__);
 		break;
 	case PROFILE_HIGH_PERFORMANCE:
 		// Restore normal max freq
-		sysfs_write(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq);
+		sysfs_write(SCALING_MAX_FREQ_PATH, cpu_max_freq);
 		ALOGD("%s: set performance mode", __func__);
 		break;
 	}
@@ -263,7 +243,7 @@ static void set_power_profile(struct samsung_power_module *samsung_pwr,
 	current_power_profile = profile;
 }
 
-static void find_input_nodes(struct samsung_power_module *samsung_pwr, char *dir) {
+static void find_input_nodes(struct touch_path *touch) {
 
 	const char filename[] = "name";
 	char errno_str[64];
@@ -271,58 +251,62 @@ static void find_input_nodes(struct samsung_power_module *samsung_pwr, char *dir
 	char file_content[20];
 	char *path = NULL;
 	char *node_path = NULL;
+	char dir[1024];
 	size_t pathsize;
 	size_t node_pathsize;
 	DIR *d;
+	uint32_t i;
 
-	d = opendir(dir);
-	if (d == NULL) {
-		return;
-	}
+	for (i = 0; i < 20; i++) {
+		snprintf(dir, sizeof(dir), "/sys/class/input/input%d", i);
+		d = opendir(dir);
+		if (d == NULL) {
+			return;
+		}
 
-	while ((de = readdir(d)) != NULL) {
-		if (strncmp(filename, de->d_name, sizeof(filename)) == 0) {
-			pathsize = strlen(dir) + strlen(de->d_name) + 2;
-			node_pathsize = strlen(dir) + strlen("enabled") + 2;
+		while ((de = readdir(d)) != NULL) {
+			if (strncmp(filename, de->d_name, sizeof(filename)) == 0) {
+				pathsize = strlen(dir) + strlen(de->d_name) + 2;
+				node_pathsize = strlen(dir) + strlen("enabled") + 2;
 
-			path = malloc(pathsize);
-			node_path = malloc(node_pathsize);
-			if (path == NULL || node_path == NULL) {
-				strerror_r(errno, errno_str, sizeof(errno_str));
-				ALOGE("Out of memory: %s\n", errno_str);
-				return;
-			}
-
-			snprintf(path, pathsize, "%s/%s", dir, filename);
-			sysfs_read(path, file_content, sizeof(file_content));
-			snprintf(node_path, node_pathsize, "%s/%s", dir, "enabled");
-
-			if (strncmp(file_content, "sec_touchkey", 12) == 0) {
-				ALOGV("%s: found touchkey path: %s\n", __func__, node_path);
-				samsung_pwr->touchkey_power_path = malloc(node_pathsize);
-				if (samsung_pwr->touchkey_power_path == NULL) {
+				path = malloc(pathsize);
+				node_path = malloc(node_pathsize);
+				if (path == NULL || node_path == NULL) {
 					strerror_r(errno, errno_str, sizeof(errno_str));
 					ALOGE("Out of memory: %s\n", errno_str);
 					return;
 				}
-				snprintf(samsung_pwr->touchkey_power_path, node_pathsize,
-								"%s", node_path);
-			}
 
-			if (strncmp(file_content, "sec_touchscreen", 15) == 0) {
-				ALOGV("%s: found touchscreen path: %s\n", __func__, node_path);
-				samsung_pwr->touchscreen_power_path = malloc(node_pathsize);
-				if (samsung_pwr->touchscreen_power_path == NULL) {
-					strerror_r(errno, errno_str, sizeof(errno_str));
-					ALOGE("Out of memory: %s\n", errno_str);
-					return;
+				snprintf(path, pathsize, "%s/%s", dir, filename);
+				sysfs_read(path, file_content, sizeof(file_content));
+				snprintf(node_path, node_pathsize, "%s/%s", dir, "enabled");
+
+				if (strncmp(file_content, "sec_touchkey", 12) == 0) {
+					ALOGV("%s: found touchkey path: %s\n", __func__, node_path);
+					touch->touchkey_power_path = malloc(node_pathsize);
+					if (touch->touchkey_power_path == NULL) {
+						strerror_r(errno, errno_str, sizeof(errno_str));
+						ALOGE("Out of memory: %s\n", errno_str);
+						return;
+					}
+					snprintf(touch->touchkey_power_path, node_pathsize,
+									"%s", node_path);
 				}
-				snprintf(samsung_pwr->touchscreen_power_path, node_pathsize,
-								   "%s", node_path);
+
+				if (strncmp(file_content, "sec_touchscreen", 15) == 0) {
+					ALOGV("%s: found touchscreen path: %s\n", __func__, node_path);
+					touch->touchscreen_power_path = malloc(node_pathsize);
+					if (touch->touchscreen_power_path == NULL) {
+						strerror_r(errno, errno_str, sizeof(errno_str));
+						ALOGE("Out of memory: %s\n", errno_str);
+						return;
+					}
+					snprintf(touch->touchscreen_power_path, node_pathsize,
+									"%s", node_path);
+				}
 			}
 		}
 	}
-
 	if (path)
 		free(path);
 	if (node_path)
@@ -333,48 +317,13 @@ static void find_input_nodes(struct samsung_power_module *samsung_pwr, char *dir
 /**********************************************************
  *** INIT FUNCTIONS
  **********************************************************/
-
-static void init_cpufreqs(struct samsung_power_module *samsung_pwr) {
-
-	int rc;
-	struct stat sb;
-
-	sysfs_read(SCALING_MIN_FREQ_PATH, samsung_pwr->cpu_min_freq,
-		   sizeof(samsung_pwr->cpu_min_freq));
-	cpu_interactive_read(HISPEED_FREQ_PATH,  samsung_pwr->cpu_hispeed_freq);
-	sysfs_read(SCALING_MAX_FREQ_PATH, samsung_pwr->cpu_max_freq,
-		   sizeof(samsung_pwr->cpu_max_freq));
-	ALOGV("%s: CPU min freq: %s\n", __func__, samsung_pwr->cpu_min_freq);
-	ALOGV("%s: CPU hispeed freq: %s\n", __func__, samsung_pwr->cpu_hispeed_freq);
-	ALOGV("%s: CPU max freq: %s\n", __func__, samsung_pwr->cpu_max_freq);
-}
-
-static void init_touch_input_power_path(struct samsung_power_module *samsung_pwr)
-{
-
-	char dir[1024];
-	char errno_str[64];
-	uint32_t i;
-
-	for (i = 0; i < 20; i++) {
-		snprintf(dir, sizeof(dir), "/sys/class/input/input%d", i);
-		find_input_nodes(samsung_pwr, dir);
-	}
-}
-
 /*
  * The init function performs power management setup actions at runtime
  * startup, such as to set default cpufreq parameters.  This is called only by
  * the Power HAL instance loaded by PowerManagerService.
  */
-static void samsung_power_init(struct power_module *module) {
-
-	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
-
-	get_scaling_governor();
+void power_init() {
 	get_cpu_interactive_paths();
-	init_cpufreqs(samsung_pwr);
-	init_touch_input_power_path(samsung_pwr);
 }
 
 /*
@@ -400,11 +349,10 @@ static void samsung_power_init(struct power_module *module) {
  * screen (if present), and called to enter interactive state prior to turning
  * on the screen.
  */
-static void samsung_power_set_interactive(struct power_module *module, int on) {
+void power_set_interactive(int on) {
 
-	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
+	struct touch_path *touch = (struct touch_path *)malloc(sizeof(struct touch_path));
 	struct stat sb;
-	char buf[80];
 	char touchkey_node[2];
 	int rc;
 
@@ -418,16 +366,17 @@ static void samsung_power_set_interactive(struct power_module *module, int on) {
 		goto out;
 		}
 	}
+	find_input_nodes(touch);
 
-	sysfs_write(samsung_pwr->touchscreen_power_path, on ? "1" : "0");
+	sysfs_write(touch->touchscreen_power_path, on ? "1" : "0");
 
-	rc = stat(samsung_pwr->touchkey_power_path, &sb);
+	rc = stat(touch->touchkey_power_path, &sb);
 	if (rc < 0) {
 		goto out;
 	}
 
 	if (!on) {
-		if (sysfs_read(samsung_pwr->touchkey_power_path, touchkey_node,
+		if (sysfs_read(touch->touchkey_power_path, touchkey_node,
 			       sizeof(touchkey_node)) == 0) {
 			/*
 			* If touchkey_node is 0, the keys have been disabled by another component
@@ -435,15 +384,15 @@ static void samsung_power_set_interactive(struct power_module *module, int on) {
 			* from suspend.
 			*/
 			if ((touchkey_node[0] - '0') == 0) {
-				samsung_pwr->touchkey_blocked = true;
+				touch->touchkey_blocked = true;
 			} else {
-				samsung_pwr->touchkey_blocked = false;
-				sysfs_write(samsung_pwr->touchkey_power_path, "0");
+				touch->touchkey_blocked = false;
+				sysfs_write(touch->touchkey_power_path, "0");
 			}
 		}
 	} else {
-		if (!samsung_pwr->touchkey_blocked) {
-			sysfs_write(samsung_pwr->touchkey_power_path, "1");
+		if (!touch->touchkey_blocked) {
+			sysfs_write(touch->touchkey_power_path, "1");
 		}
 	}
 
@@ -488,27 +437,26 @@ out:
  *     be boosted for a specific duration. The data parameter is an
  *     integer value of the boost duration in microseconds.
  */
-static void samsung_power_hint(struct power_module *module,
-                                  power_hint_t hint,
-                                  void *data)
+void power_hint(power_hint_t hint, void *data)
 {
+	char boostpulse_path[PATH_MAX];
+	int boostpulse_fd;
 
-	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
-	char errno_str[64];
-	int len;
+	sprintf(boostpulse_path, "%s%s", CPU_INTERACTIVE_PATH, BOOSTPULSE_PATH);
+	boostpulse_fd = open(boostpulse_path, O_WRONLY);
+
+	if (boostpulse_fd < 0) {
+		ALOGE("Error opening %s: %s\n", boostpulse_path, strerror(errno));
+	}
 
 	switch (hint) {
 		case POWER_HINT_INTERACTION: {
-			char errno_str[64];
-			ssize_t len;
-			int fd;
-
 			if (current_power_profile == PROFILE_POWER_SAVE) {
 				return;
 			}
 
 			ALOGV("%s: POWER_HINT_INTERACTION", __func__);
-			send_boostpulse(samsung_pwr->boostpulse_fd);
+			send_boostpulse(boostpulse_fd);
 			break;
 		}
 		case POWER_HINT_VSYNC: {
@@ -520,98 +468,10 @@ static void samsung_power_hint(struct power_module *module,
 
 			ALOGV("%s: POWER_HINT_SET_PROFILE", __func__);
 	
-			set_power_profile(samsung_pwr, profile);
+			set_power_profile(profile);
 			break;
 		}
 		default:
 			break;
 	}
 }
-
-static int samsung_get_feature(struct power_module *module __unused,
-                               feature_t feature)
-{
-
-	if (feature == POWER_FEATURE_SUPPORTED_PROFILES) {
-		return 3;
-	}
-
-	return -1;
-}
-
-static void samsung_set_feature(struct power_module *module, feature_t feature, int __unused state)
-{
-
-	struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
-
-	switch (feature) {
-#ifdef TARGET_TAP_TO_WAKE_NODE
-		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGV("%s: %s double tap to wake", __func__, state ? "enabling" : "disabling");
-			sysfs_write(TARGET_TAP_TO_WAKE_NODE, state > 0 ? "1" : "0");
-			break;
-#endif
-		default:
-			break;
-	}
-}
-
-static int power_open(const hw_module_t* module, const char* name,
-        hw_device_t** device)
-{
-    int status = -EINVAL;
-    if (module && name && device) {
-        if (!strcmp(name, POWER_HARDWARE_MODULE_ID)) {
-            power_module_t *dev = (power_module_t *)malloc(sizeof(*dev));
-            memset(dev, 0, sizeof(*dev));
-
-            if(dev) {
-                /* initialize the fields */
-                dev->common.module_api_version = POWER_MODULE_API_VERSION_0_2;
-                dev->common.tag = HARDWARE_DEVICE_TAG;
-                dev->init = samsung_power_init;
-                dev->powerHint = samsung_power_hint;
-                dev->setInteractive = samsung_power_set_interactive;
-                /* At the moment we support 0.2 APIs */
-                dev->setFeature = samsung_set_feature,
-				dev->getFeature = samsung_get_feature;
-                dev->get_number_of_platform_modes = NULL,
-                dev->get_platform_low_power_stats = NULL,
-                dev->get_voter_list = NULL,
-                *device = (hw_device_t*)dev;
-                status = 0;
-            } else {
-                status = -ENOMEM;
-            }
-        }
-    }
-
-    return status;
-}
-
-static struct hw_module_methods_t power_module_methods = {
-    .open = power_open,
-};
-
-struct samsung_power_module HAL_MODULE_INFO_SYM = {
-	.base = {
-		.common = {
-			.tag = HARDWARE_MODULE_TAG,
-			.module_api_version = POWER_MODULE_API_VERSION_0_2,
-			.hal_api_version = HARDWARE_HAL_API_VERSION,
-			.id = POWER_HARDWARE_MODULE_ID,
-			.name = "Samsung Power HAL",
-			.author = "The CyanogenMod Project",
-			.methods = &power_module_methods,
-		},
-
-		.init = samsung_power_init,
-		.setInteractive = samsung_power_set_interactive,
-		.powerHint = samsung_power_hint,
-		.getFeature = samsung_get_feature,
-		.setFeature = samsung_set_feature
-	},
-
-	.lock = PTHREAD_MUTEX_INITIALIZER,
-	.boostpulse_fd = -1,
-};

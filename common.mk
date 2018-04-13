@@ -125,10 +125,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	lights.sc8830
 
-# PowerHAL
-#PRODUCT_PACKAGES += \
-#	power.sc8830
-
 # Camera config
 PRODUCT_PROPERTY_OVERRIDES += \
 	camera.disable_zsl_mode=1
@@ -184,6 +180,7 @@ PRODUCT_PACKAGES += \
 	android.hardware.keymaster@3.0-impl \
 	android.hardware.light@2.0-impl \
 	android.hardware.memtrack@1.0-impl \
+	android.hardware.power@1.0-service.sc8830 \
 	android.hardware.radio@1.0 \
 	android.hardware.radio.deprecated@1.0 \
 	android.hardware.renderscript@1.0-impl \
