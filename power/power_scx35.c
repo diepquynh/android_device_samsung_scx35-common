@@ -63,7 +63,8 @@ static char CPU_INTERACTIVE_PATH[80];
 enum power_profile_e {
 	PROFILE_POWER_SAVE = 0,
 	PROFILE_BALANCED,
-	PROFILE_HIGH_PERFORMANCE
+	PROFILE_HIGH_PERFORMANCE,
+	PROFILE_MAX
 };
 static enum power_profile_e current_power_profile = PROFILE_HIGH_PERFORMANCE;
 
@@ -237,6 +238,8 @@ static void set_power_profile(enum power_profile_e profile)
 		// Restore normal max freq
 		sysfs_write(SCALING_MAX_FREQ_PATH, cpu_max_freq);
 		ALOGD("%s: set performance mode", __func__);
+		break;
+	case PROFILE_MAX:
 		break;
 	}
 
@@ -474,4 +477,9 @@ void power_hint(power_hint_t hint, void *data)
 		default:
 			break;
 	}
+}
+
+int get_number_of_profiles()
+{
+    return PROFILE_MAX;
 }
