@@ -173,6 +173,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # HIDL (HAL Interface Definition Language)
 include $(LOCAL_PATH)/hidl.mk
 
+# Performance
+PRODUCT_PROPERTY_OVERRIDES += \
+	sys.use_fifo_ui=1
+
 # Permissions
 PERMISSIONS_XML_FILES := \
 	frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml \
