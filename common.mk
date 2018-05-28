@@ -150,6 +150,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.dex2oat-flags=--no-watch-dog
 
+# Performance
+PRODUCT_PROPERTY_OVERRIDES += \
+	sys.use_fifo_ui=1
+
 # Permissions
 PERMISSIONS_XML_FILES := \
 	frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml \
