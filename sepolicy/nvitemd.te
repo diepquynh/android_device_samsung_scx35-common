@@ -1,0 +1,3 @@
+type nvitemd, domain;
+
+init_daemon_domain(nvitemd)
