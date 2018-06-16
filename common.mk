@@ -118,8 +118,8 @@ PRODUCT_PACKAGES += \
 	lights.sc8830
 
 # PowerHAL
-PRODUCT_PACKAGES += \
-	power.sc8830
+#PRODUCT_PACKAGES += \
+#	power.sc8830
 
 # Camera config
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -169,7 +169,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.keymaster@3.0-impl \
 	android.hardware.light@2.0-impl \
 	android.hardware.memtrack@1.0-impl \
-	android.hardware.power@1.0-impl \
 	android.hardware.radio@1.0 \
 	android.hardware.radio.deprecated@1.0 \
 	android.hardware.renderscript@1.0-impl \
