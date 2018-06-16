@@ -163,8 +163,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.configstore@1.0-impl \
 	android.hardware.drm@1.0-impl \
 	android.hardware.gnss@1.0-impl \
-	android.hardware.graphics.allocator@2.0-impl \
-	android.hardware.graphics.allocator@2.0-service \
 	android.hardware.graphics.mapper@2.0-impl \
 	android.hardware.keymaster@3.0-impl \
 	android.hardware.light@2.0-impl \
