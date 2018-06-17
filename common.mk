@@ -64,6 +64,9 @@ MEDIA_XML_CONFIGS := \
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(MEDIA_XML_CONFIGS),$(f):$(TARGET_COPY_OUT_VENDOR)/etc/$(notdir $(f)))
 
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/system/etc/init/android.hardware.media.omx@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.media.omx@1.0-service.rc
+
 # Common libs
 PRODUCT_PACKAGES += \
 	libstlport \
