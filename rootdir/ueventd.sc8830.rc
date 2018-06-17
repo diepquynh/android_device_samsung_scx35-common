@@ -87,7 +87,7 @@
 /dev/download		0660     system      system
 /dev/slog_wcn           0660     system      system
 /dev/power_ctl		0660     system      system
-
+/dev/video0				0600	media	graphics
 ## Sensor IIO device
 /dev/iio:device*      0660  system   radio
 
