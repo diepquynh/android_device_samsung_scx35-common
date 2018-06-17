@@ -62,7 +62,7 @@ MEDIA_XML_CONFIGS := \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml
 
 PRODUCT_COPY_FILES += \
-	$(foreach f,$(MEDIA_XML_CONFIGS),$(f):system/etc/$(notdir $(f)))
+	$(foreach f,$(MEDIA_XML_CONFIGS),$(f):$(TARGET_COPY_OUT_VENDOR)/etc/$(notdir $(f)))
 
 # Common libs
 PRODUCT_PACKAGES += \
@@ -189,7 +189,7 @@ PERMISSIONS_XML_FILES := \
 	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml
 
 PRODUCT_COPY_FILES += \
-	$(foreach f,$(PERMISSIONS_XML_FILES),$(f):system/etc/permissions/$(notdir $(f)))
+	$(foreach f,$(PERMISSIONS_XML_FILES),$(f):$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/$(notdir $(f)))
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
