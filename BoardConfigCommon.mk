@@ -31,7 +31,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/scx35-common/bluet
 BOARD_CUSTOM_BT_CONFIG := device/samsung/scx35-common/bluetooth/libbt_vndcfg.txt
 
 # RIL
-BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
+TARGET_DISABLE_ASHMEM_TRACKING := true
 
 # Graphics
 BOARD_EGL_NEEDS_HANDLE_VALUE := true
