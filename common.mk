@@ -108,7 +108,10 @@ PRODUCT_PACKAGES += \
 # Rootdir files
 PRODUCT_PACKAGES += \
 	init.board.rc \
-	init.wifi.rc
+	init.wifi.rc \
+	init.sc8830.rc \
+	init.sc8830.usb.rc \
+	ueventd.sc8830.rc
 
 # Packages
 PRODUCT_PACKAGES += \
