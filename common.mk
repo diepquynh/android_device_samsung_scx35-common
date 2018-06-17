@@ -163,7 +163,7 @@ PRODUCT_PACKAGES += \
 	android.hardware.audio.effect@2.0-impl \
 	android.hardware.bluetooth@1.0-impl \
 	android.hardware.broadcastradio@1.0-impl \
-	android.hardware.camera.provider@2.4-impl.legacy \
+	android.hardware.camera.provider@2.4-impl-legacy \
 	android.hardware.configstore@1.0-impl \
 	android.hardware.drm@1.0-impl \
 	android.hardware.gnss@1.0-impl \
@@ -179,7 +179,7 @@ PRODUCT_PACKAGES += \
 	android.hardware.vibrator@1.0-impl \
 	android.hardware.wifi@1.0-service \
 	android.system.net.netd@1.0 \
- 	camera.device@1.0-impl.legacy
+ 	camera.device@1.0-impl-legacy
 
 # Permissions
 PERMISSIONS_XML_FILES := \
