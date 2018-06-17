@@ -7,7 +7,7 @@ on boot
     chown system system /sys/class/sec/gps/GPS_PWR_EN/value
     chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
 
-service gpsd /system/vendor/bin/gpsd -c /system/etc/gps.xml
+service gpsd /system/vendor/bin/gpsd -c /system/vendor/etc/gps.xml
     class main
     user gps
     group system inet net_raw
