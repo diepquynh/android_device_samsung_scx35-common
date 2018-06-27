@@ -221,5 +221,3 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp,adb
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
