@@ -221,3 +221,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp,adb
+
+# Android Go
+$(call inherit-product, build/target/product/go_defaults_512.mk)
