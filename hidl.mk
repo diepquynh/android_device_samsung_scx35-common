@@ -16,10 +16,6 @@ PRODUCT_PACKAGES += \
 	android.hardware.camera.provider@2.4-impl-legacy \
  	camera.device@1.0-impl-legacy
 
-# ConfigStore
-PRODUCT_PACKAGES += \
-	android.hardware.configstore@1.0-impl
-
 # GPS
 PRODUCT_PACKAGES += \
 	android.hardware.gnss@1.0-impl
@@ -43,15 +39,6 @@ PRODUCT_PACKAGES += \
 # PowerHAL
 PRODUCT_PACKAGES += \
 	android.hardware.power@1.0-service.sc8830
-
-# RIL
-PRODUCT_PACKAGES += \
-	android.hardware.radio@1.0 \
-	android.hardware.radio.deprecated@1.0
-
-# RenderScript
-PRODUCT_PACKAGES += \
-	android.hardware.renderscript@1.0-impl
 
 # Sensors
 PRODUCT_PACKAGES += \
