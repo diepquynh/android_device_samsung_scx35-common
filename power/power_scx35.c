@@ -39,18 +39,18 @@
 
 #define PARAM_MAXLEN      10
 
-#define CPU_SYSFS_PATH      "/sys/devices/system/cpu"
-#define CPUFREQ_SYSFS_PATH  CPU_SYSFS_PATH "/cpufreq/"
-
+#define CPU_SYSFS_PATH          "/sys/devices/system/cpu"
+#define CPUFREQ_SYSFS_PATH      CPU_SYSFS_PATH "/cpufreq/"
+#define CPU_MAX_FREQ_PATH       CPU_SYSFS_PATH "/cpu0/cpufreq/cpuinfo_max_freq"
 #define SCALING_GOVERNOR_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_governor"
 #define SCALING_MAX_FREQ_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_max_freq"
 #define SCALING_MIN_FREQ_PATH   CPU_SYSFS_PATH "/cpu0/cpufreq/scaling_min_freq"
-#define PANEL_BRIGHTNESS "/sys/class/backlight/panel/brightness"
+#define PANEL_BRIGHTNESS        "/sys/class/backlight/panel/brightness"
 
 /* Interactive governor */
-#define HISPEED_FREQ_PATH "/hispeed_freq"
-#define IO_IS_BUSY_PATH   "/io_is_busy"
-#define BOOSTPULSE_PATH   "/boostpulse"
+#define HISPEED_FREQ_PATH       "/hispeed_freq"
+#define IO_IS_BUSY_PATH         "/io_is_busy"
+#define BOOSTPULSE_PATH         "/boostpulse"
 
 struct touch_path {
 	char* touchscreen_power_path;
@@ -199,7 +199,7 @@ static void send_boostpulse(int boostpulse_fd)
 
     len = write(boostpulse_fd, "1", 1);
     if (len < 0) {
-        ALOGE("Error writing to %s: %s", BOOSTPULSE_PATH, strerror(errno));
+        ALOGE("Error writing to boostpulse path: %s", strerror(errno));
     }
 }
 
@@ -236,6 +236,8 @@ static void set_power_profile(enum power_profile_e profile)
 		break;
 	case PROFILE_HIGH_PERFORMANCE:
 		// Restore normal max freq
+		sysfs_read(CPU_MAX_FREQ_PATH, cpu_max_freq,
+				   sizeof(cpu_max_freq));
 		sysfs_write(SCALING_MAX_FREQ_PATH, cpu_max_freq);
 		ALOGD("%s: set performance mode", __func__);
 		break;
