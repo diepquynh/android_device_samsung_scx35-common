@@ -21,8 +21,8 @@ PRODUCT_PACKAGES += \
 	android.hardware.gnss@1.0-impl
 
 # Graphics
-PRODUCT_PACKAGES += \
-	android.hardware.graphics.mapper@2.0-impl
+#PRODUCT_PACKAGES += \
+#	android.hardware.graphics.mapper@2.0-impl
 
 # Keymaster
 PRODUCT_PACKAGES += \
