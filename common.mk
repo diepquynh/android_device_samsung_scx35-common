@@ -52,6 +52,10 @@ PRODUCT_PACKAGES += \
 	libstagefright_sprd_aacdec \
 	libstagefright_sprd_mp3dec
 
+# seccomp
+PRODUCT_COPY_FILES += \
+	device/samsung/scx35-common/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy
+
 # Media config
 PRODUCT_PACKAGES += \
 	media_codecs.xml

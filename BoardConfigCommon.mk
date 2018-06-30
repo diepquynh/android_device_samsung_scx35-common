@@ -46,7 +46,7 @@ DEVICE_MANIFEST_FILE := device/samsung/scx35-common/configs/manifest.xml
 BOARD_CANT_REALLOCATE_OMX_BUFFERS := true
 
 # seccomp
-BOARD_SECCOMP_POLICY := device/samsung/scx35-common/seccomp
+#BOARD_SECCOMP_POLICY := device/samsung/scx35-common/seccomp # This flag is dead?
 
 # Binder API version
 TARGET_USES_64_BIT_BINDER := true
