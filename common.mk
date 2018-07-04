@@ -215,4 +215,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp,adb
 
 # Android Go
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.config.low_ram=false
+
 $(call inherit-product, build/target/product/go_defaults_512.mk)
