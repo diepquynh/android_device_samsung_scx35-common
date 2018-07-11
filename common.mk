@@ -85,7 +85,8 @@ PRODUCT_PACKAGES += \
 	libsecril-shim \
 	libril \
 	rild \
-	modemd
+	modemd \
+	modem_control
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	rild.libpath=/system/vendor/lib/libsecril-shim.so
