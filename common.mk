@@ -79,6 +79,19 @@ PRODUCT_PACKAGES += \
 	libril_shim \
 	libgps_shim
 
+# RIL
+PRODUCT_PACKAGES += \
+	libsecril-client-sprd \
+	libsecril-shim \
+	libril \
+	rild
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	rild.libpath=/system/vendor/lib/libsecril-shim.so
+
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/system/etc/init/rild.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/rild.rc
+
 # GPS
 PRODUCT_PACKAGES += \
 	libgpspc \
