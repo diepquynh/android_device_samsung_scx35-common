@@ -107,4 +107,4 @@ PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed
 WITH_DEX_PREOPT_GENERATE_PROFILE := false
 
 # SELinux policy
-BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
+#BOARD_SEPOLICY_DIRS += device/samsung/scx35-common/sepolicy
