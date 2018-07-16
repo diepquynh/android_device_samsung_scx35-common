@@ -77,7 +77,8 @@ PRODUCT_PACKAGES += \
 	libstlport \
 	librilutils \
 	libril_shim \
-	libgps_shim
+	libgps_shim \
+	libphoneserver_shim
 
 # RIL
 PRODUCT_PACKAGES += \

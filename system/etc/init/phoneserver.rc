@@ -11,6 +11,7 @@ service phoneserver_w /system/vendor/bin/phoneserver -m w
     group radio system shell dhcp
     disabled
     oneshot
+    setenv LD_PRELOAD /vendor/lib/libphoneserver_shim.so
 
 service phoneserver_l /system/vendor/bin/phoneserver -m l
     class core
