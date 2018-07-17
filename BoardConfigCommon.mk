@@ -77,8 +77,7 @@ TARGET_HAS_BACKLIT_KEYS := false
 
 # Target shims
 TARGET_LD_SHIM_LIBS := \
-	/system/vendor/bin/gpsd|libgps_shim.so \
-	/system/vendor/lib/libreference-ril_sp.so|libril_shim.so
+	/system/vendor/bin/gpsd|libgps_shim.so
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_sec
