@@ -82,6 +82,7 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
+	libatchannel \
 	libsecril-client-sprd \
 	libsecril-shim \
 	libril \
