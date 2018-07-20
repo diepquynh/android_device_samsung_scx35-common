@@ -444,24 +444,24 @@ out:
  */
 void power_hint(power_hint_t hint, void *data)
 {
-	char boostpulse_path[PATH_MAX];
-	int boostpulse_fd;
-
-	sprintf(boostpulse_path, "%s%s", CPU_INTERACTIVE_PATH, BOOSTPULSE_PATH);
-	boostpulse_fd = open(boostpulse_path, O_WRONLY);
-
-	if (boostpulse_fd < 0) {
-		ALOGE("Error opening %s: %s\n", boostpulse_path, strerror(errno));
-	}
-
 	switch (hint) {
 		case POWER_HINT_INTERACTION: {
 			if (current_power_profile == PROFILE_POWER_SAVE) {
 				return;
 			}
+			char boostpulse_path[PATH_MAX];
+			int boostpulse_fd;
+
+			sprintf(boostpulse_path, "%s%s", CPU_INTERACTIVE_PATH, BOOSTPULSE_PATH);
+			boostpulse_fd = open(boostpulse_path, O_WRONLY);
+
+			if (boostpulse_fd < 0) {
+				ALOGE("Error opening %s: %s\n", boostpulse_path, strerror(errno));
+			}
 
 			ALOGV("%s: POWER_HINT_INTERACTION", __func__);
 			send_boostpulse(boostpulse_fd);
+			close(boostpulse_fd);
 			break;
 		}
 		case POWER_HINT_VSYNC: {
