@@ -1,6 +1,7 @@
 # Audio
 PRODUCT_PACKAGES += \
 	android.hardware.audio@2.0-impl \
+    android.hardware.audio@2.0-service \
 	android.hardware.audio.effect@2.0-impl
 
 # Bluetooth
@@ -33,7 +34,7 @@ PRODUCT_PACKAGES += \
 	android.hardware.light@2.0-impl
 
 # Memtrack
-PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \z
 	android.hardware.memtrack@1.0-impl
 
 # PowerHAL
