@@ -36,7 +36,8 @@ PRODUCT_PACKAGES += \
 	android.hardware.light@2.0-impl
 
 # Memtrack
-PRODUCT_PACKAGES += \z
+PRODUCT_PACKAGES += \
+	android.hardware.memtrack@1.0-service \
 	android.hardware.memtrack@1.0-impl
 
 # PowerHAL
