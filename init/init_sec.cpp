@@ -55,25 +55,25 @@ enum device_variant {
 
 device_variant match(std::string bl)
 {
-        if (bl.find("G360H") != std::string::npos) {
-                return G360H;
-        } else if (bl.find("G360HU") != std::string::npos) {
-                return G360HU;
-	    } else if (bl.find("I9060I") != std::string::npos) {
-                return I9060I;
-	    } else if (bl.find("I9060C") != std::string::npos) {
-                return I9060C;
-	    } else if (bl.find("I9060M") != std::string::npos) {
-                return I9060M;
-        } else if (bl.find("G361H") != std::string::npos) {
-                return G361H;
-        } else if (bl.find("G531BT") != std::string::npos) {
-                return G531BT;
-        } else if (bl.find("G531H") != std::string::npos) {
-                return G531H;
-        } else {
-                return DEVICE_UNSUPPORTED;
-        }
+	if (bl.find("G360H") != std::string::npos) {
+			return G360H;
+	} else if (bl.find("G360HU") != std::string::npos) {
+			return G360HU;
+	} else if (bl.find("I9060I") != std::string::npos) {
+			return I9060I;
+	} else if (bl.find("I9060C") != std::string::npos) {
+			return I9060C;
+	} else if (bl.find("I9060M") != std::string::npos) {
+			return I9060M;
+	} else if (bl.find("G361H") != std::string::npos) {
+			return G361H;
+	} else if (bl.find("G531BT") != std::string::npos) {
+			return G531BT;
+	} else if (bl.find("G531H") != std::string::npos) {
+			return G531H;
+	} else {
+			return DEVICE_UNSUPPORTED;
+	}
 }
 
 device_variant find_device_variant() {
@@ -83,13 +83,13 @@ device_variant find_device_variant() {
 
 void property_override(char const prop[], char const value[])
 {
-    prop_info *pi;
+	prop_info *pi;
 
-    pi = (prop_info*) __system_property_find(prop);
-    if (pi)
-        __system_property_update(pi, value, strlen(value));
-    else
-        __system_property_add(prop, strlen(prop), value, strlen(value));
+	pi = (prop_info*) __system_property_find(prop);
+	if (pi)
+		__system_property_update(pi, value, strlen(value));
+	else
+		__system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
 void vendor_load_properties()
@@ -99,44 +99,44 @@ void vendor_load_properties()
 
 	switch (variant) {
 		case G360H:
-		        /* core33gdd */
-		        property_override("ro.product.model", "SM-G360H");
-        		property_override("ro.product.device", "core33g");
+			/* core33gdd */
+			property_override("ro.product.model", "SM-G360H");
+			property_override("ro.product.device", "core33g");
 			break;
 		case G360HU:
-		        /* core33gdc */
-		        property_override("ro.product.model", "SM-G360HU");
-		        property_override("ro.product.device", "core33g");
+			/* core33gdc */
+			property_override("ro.product.model", "SM-G360HU");
+			property_override("ro.product.device", "core33g");
 			break;
 		case I9060I:
-		        /* grandneove3gxx */
-		        property_override("ro.product.model", "GT-I9060I");
-		        property_override("ro.product.device", "grandneove3g");
+			/* grandneove3gxx */
+			property_override("ro.product.model", "GT-I9060I");
+			property_override("ro.product.device", "grandneove3g");
 			break;
 		case I9060C:
-		        /* grandneove3gvj */
-		        property_override("ro.product.model", "GT-I9060C");
-		        property_override("ro.product.device", "grandneove3g");
+			/* grandneove3gvj */
+			property_override("ro.product.model", "GT-I9060C");
+			property_override("ro.product.device", "grandneove3g");
 			break;
 		case I9060M:
-		        /* grandneove3gub */
-		        property_override("ro.product.model", "GT-I9060M");
-		        property_override("ro.product.device", "grandneove3g");
+			/* grandneove3gub */
+			property_override("ro.product.model", "GT-I9060M");
+			property_override("ro.product.device", "grandneove3g");
 			break;
 		case G361H:
-		        /* coreprimeve3gxx */
-		        property_override("ro.product.model", "SM-G361H");
-		        property_override("ro.product.device", "coreprimeve3g");
+			/* coreprimeve3gxx */
+			property_override("ro.product.model", "SM-G361H");
+			property_override("ro.product.device", "coreprimeve3g");
 			break;
 		case G531BT:
-		        /* grandprimeve3gdtv */
-        		property_override("ro.product.model", "SM-G531BT");
-		        property_override("ro.product.device", "grandprimeve3gdtv");
+			/* grandprimeve3gdtv */
+			property_override("ro.product.model", "SM-G531BT");
+			property_override("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
-                /* grandprimeve3gxx */
-		        property_override("ro.product.model", "SM-G531H");
-		        property_override("ro.product.device", "grandprimeve3g");
+			/* grandprimeve3gxx */
+			property_override("ro.product.model", "SM-G531H");
+			property_override("ro.product.device", "grandprimeve3g");
 			break;
 		default:
 			break;
