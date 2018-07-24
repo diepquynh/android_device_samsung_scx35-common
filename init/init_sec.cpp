@@ -45,9 +45,12 @@ enum device_variant {
 	G360H,
 	G360HU,
 	I9060I,
+	I9060C,
+	I9060M,
 	G361H,
 	G531BT,
 	G531H,
+	DEVICE_UNSUPPORTED,
 };
 
 device_variant match(std::string bl)
@@ -56,14 +59,20 @@ device_variant match(std::string bl)
                 return G360H;
         } else if (bl.find("G360HU") != std::string::npos) {
                 return G360HU;
-	} else if (bl.find("I9060I") != std::string::npos) {
+	    } else if (bl.find("I9060I") != std::string::npos) {
                 return I9060I;
+	    } else if (bl.find("I9060C") != std::string::npos) {
+                return I9060C;
+	    } else if (bl.find("I9060M") != std::string::npos) {
+                return I9060M;
         } else if (bl.find("G361H") != std::string::npos) {
                 return G361H;
         } else if (bl.find("G531BT") != std::string::npos) {
                 return G531BT;
-        } else {
+        } else if (bl.find("G531H") != std::string::npos) {
                 return G531H;
+        } else {
+                return DEVICE_UNSUPPORTED;
         }
 }
 
@@ -104,6 +113,16 @@ void vendor_load_properties()
 		        property_override("ro.product.model", "GT-I9060I");
 		        property_override("ro.product.device", "grandneove3g");
 			break;
+		case I9060C:
+		        /* grandneove3gvj */
+		        property_override("ro.product.model", "GT-I9060C");
+		        property_override("ro.product.device", "grandneove3g");
+			break;
+		case I9060M:
+		        /* grandneove3gub */
+		        property_override("ro.product.model", "GT-I9060M");
+		        property_override("ro.product.device", "grandneove3g");
+			break;
 		case G361H:
 		        /* coreprimeve3gxx */
 		        property_override("ro.product.model", "SM-G361H");
@@ -115,7 +134,7 @@ void vendor_load_properties()
 		        property_override("ro.product.device", "grandprimeve3gdtv");
 			break;
 		case G531H:
-				/* grandprimeve3gxx */
+                /* grandprimeve3gxx */
 		        property_override("ro.product.model", "SM-G531H");
 		        property_override("ro.product.device", "grandprimeve3g");
 			break;
