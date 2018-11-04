@@ -106,7 +106,7 @@ TARGET_POWERHAL_VARIANT := scx35
 TARGET_INIT_VENDOR_LIB := libinit_sec
 
 # Use dmalloc() for such low memory devices like us
-MALLOC_IMPL := dlmalloc
+# MALLOC_IMPL := dlmalloc
 BOARD_USES_LEGACY_MMAP := true
 
 # Enable dex-preoptimization to speed up the first boot sequence
